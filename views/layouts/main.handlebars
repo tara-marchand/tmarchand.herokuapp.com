@@ -6,9 +6,18 @@
         <title>Tara Marchand</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="stylesheets/styles.css">
     </head>
     <body>
-        {{{body}}}
+        {{> header}}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                {{{body}}}
+                </div>
+            </div>
+        </div>
+        {{> footer}}
         <script src="//localhost:35729/livereload.js"></script>
     </body>
 </html>

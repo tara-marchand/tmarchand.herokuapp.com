@@ -1,0 +1,25 @@
+{
+  "name": "tmarchand",
+  "version": "0.0.1",
+  "homepage": "https://github.com/tara-marchand/tmarchand",
+  "authors": [
+    "Tara Marchand <tara@mac.com>"
+  ],
+  "description": "Tara Marchand",
+  "main": "app.js",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass": "twbs/bootstrap-sass#~3.1.1"
+  }
+}
