@@ -4373,6 +4373,9 @@ body {
 body > .container {
   padding: 60px 15px 0; }
 
+.navbar .navbar-nav a {
+  text-transform: capitalize; }
+
 .container .text-muted {
   margin: 20px 0; }
 
