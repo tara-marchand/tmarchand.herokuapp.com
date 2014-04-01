@@ -1,6 +1,23 @@
+var fs = require("fs");
+var markdown = require("markdown").markdown;
+
 exports.index = function(req, res){
     "use strict";
     res.render("home");
+};
+
+exports.md = function(req, res) {
+    "use strict";
+    fs.readFile(req.app.locals.viewsdir + "/md.md", function (err, data) {
+        if (err) {
+            console.log(err);
+            throw err;
+        }
+        var markup = markdown.toHTML(data.toString());
+        res.render(markup, {
+            layout: "markdown"
+        });
+    });
 };
 
 exports.contact = {};
