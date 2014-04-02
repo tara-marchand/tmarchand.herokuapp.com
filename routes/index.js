@@ -6,20 +6,6 @@ exports.index = function(req, res){
     res.render("home");
 };
 
-exports.md = function(req, res) {
-    "use strict";
-    fs.readFile(req.app.locals.viewsdir + "/md.md", function (err, data) {
-        if (err) {
-            console.log(err);
-            throw err;
-        }
-        var markup = markdown.toHTML(data.toString());
-        res.render("markdown", {
-            data: markup
-        });
-    });
-};
-
 exports.contact = {};
 
 exports.contact.send = function (req, res) {
@@ -46,12 +32,28 @@ exports.contact.send = function (req, res) {
 exports.page = function (req, res) {
     "use strict";
     if (req.params.page !== "favicon.ico") {
-        res.render(req.params.page, {}, function(err, html) {
+        var viewPathNoExt = req.app.locals.viewsdir + "/" + req.params.page;
+        fs.readFileSync(viewPathNoExt + ".handlebars", function (err, data) { // try handlebars
             if (err) {
-                res.render("404");
-            } else {
-                res.end(html);
+                fs.readFileSync(viewPathNoExt + ".markdown", function (err, data) { // try markdown
+                    // if (err) {
+                    //     console.log(err);
+                    //     throw err;
+                    // }
+                    var markup = markdown.toHTML(data.toString()); // render markdown
+                    console.log(markup);
+                    res.render("markdown", {
+                        data: markup
+                    });
+                });
             }
+            res.render(req.params.page, {}, function(err, html) { // render handlebars
+                if (err) {
+                    res.render("404");
+                } else {
+                    res.end(html);
+                }
+            });
         });
     }
 };
