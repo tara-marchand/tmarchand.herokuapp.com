@@ -14,8 +14,8 @@ exports.md = function(req, res) {
             throw err;
         }
         var markup = markdown.toHTML(data.toString());
-        res.render(markup, {
-            layout: "markdown"
+        res.render("markdown", {
+            data: markup
         });
     });
 };
