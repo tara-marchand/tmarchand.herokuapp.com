@@ -1,4 +1,5 @@
 /* require */
+var newrelic = require("newrelic");
 var fs = require("fs");
 var express = require("express");
 var exphbs = require("express3-handlebars");
