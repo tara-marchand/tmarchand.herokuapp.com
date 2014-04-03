@@ -39,7 +39,7 @@ var setNavItems = function() {
         fileNoExt = file.replace(".handlebars", "").replace(".markdown", "");
         filePath = path + "/" + file;
         fileStats = fs.statSync(filePath);
-        if (fileStats.isFile() && stringsToExclude.indexOf(fileNoExt) === -1) {
+        if (fileStats.isFile() && stringsToExclude.indexOf(fileNoExt) === -1 && fileNoExt[0] !== ".") {
             navItems.push(fileNoExt);
         }
     }

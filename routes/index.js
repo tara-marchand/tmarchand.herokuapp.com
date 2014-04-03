@@ -32,28 +32,27 @@ exports.contact.send = function (req, res) {
 exports.page = function (req, res) {
     "use strict";
     if (req.params.page !== "favicon.ico") {
-        var viewPathNoExt = req.app.locals.viewsdir + "/" + req.params.page;
-        fs.readFileSync(viewPathNoExt + ".handlebars", function (err, data) { // try handlebars
-            if (err) {
-                fs.readFileSync(viewPathNoExt + ".markdown", function (err, data) { // try markdown
-                    // if (err) {
-                    //     console.log(err);
-                    //     throw err;
-                    // }
-                    var markup = markdown.toHTML(data.toString()); // render markdown
-                    console.log(markup);
-                    res.render("markdown", {
-                        data: markup
-                    });
+        fs.readdir(req.app.locals.viewsdir, function(err, files) {
+            if (files.indexOf(req.params.page + ".markdown") > -1) {
+                fs.readFile(req.app.locals.viewsdir + "/" + req.params.page + ".markdown", function(err, data) {
+                    if (err) {
+                        res.render("404");
+                    } else {
+                        var markup = markdown.toHTML(data.toString()); // render markdown
+                        res.render("markdown", {
+                            data: markup
+                        });
+                    }
+                });
+            } else {
+                res.render(req.params.page, {}, function(err, html) { // render handlebars
+                    if (err) {
+                        res.render("404");
+                    } else {
+                        res.end(html);
+                    }
                 });
             }
-            res.render(req.params.page, {}, function(err, html) { // render handlebars
-                if (err) {
-                    res.render("404");
-                } else {
-                    res.end(html);
-                }
-            });
         });
     }
 };
