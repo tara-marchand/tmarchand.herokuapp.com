@@ -10,6 +10,8 @@ var sendgrid = require("sendgrid")(
   process.env.SENDGRID_PASSWORD
 );
 var routes = require("./routes");
+var passport = require("passport");
+var TwitterStrategy = require("passport-twitter").Strategy;
 
 app.engine("handlebars", exphbs({
     defaultLayout: "main"
@@ -22,6 +24,21 @@ app.use("/bower_components",  express.static(__dirname + "/bower_components"));
 app.use(express.bodyParser());
 app.use(express.logger("dev"));
 app.use(app.router);
+
+passport.use(new TwitterStrategy({
+        consumerKey: process.env.TWITTER_CONSUMER_KEY,
+        consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+        callbackURL: process.env.ROOT + "/auth/twitter/callback"
+    },
+    function(token, tokenSecret, profile, done) {
+        "use strict";
+        User.findOrCreate({
+            twitterId: profile.id
+        }, function(err, user) {
+            return done(err, user);
+        });
+    }
+));
 
 var setNavItems = function() {
     "use strict";
