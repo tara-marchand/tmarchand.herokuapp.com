@@ -1,14 +1,36 @@
+var passport = require("passport");
 var fs = require("fs");
 var markdown = require("markdown").markdown;
 
 exports.index = function(req, res){
     "use strict";
-    res.render("home");
+    res.render("index");
+};
+
+exports.auth = {};
+
+exports.auth.index = function(req, res) {
+    "use strict";
+    res.render("auth/index");
+};
+
+exports.auth.twitter = {};
+
+exports.auth.twitter.index = function(req, res) {
+    "use strict";
+    passport.authenticate("twitter");
+};
+
+exports.auth.twitter.callback= function(req, res) {
+    "use strict";
+    passport.authenticate("twitter", {
+        failureRedirect: "/auth"
+    });
 };
 
 exports.contact = {};
 
-exports.contact.send = function (req, res) {
+exports.contact.send = function(req, res) {
     "use strict";
     var from = req.body.from;
     var subject = req.body.subject;
@@ -29,7 +51,7 @@ exports.contact.send = function (req, res) {
     });
 };
 
-exports.page = function (req, res) {
+exports.page = function(req, res) {
     "use strict";
     if (req.params.page !== "favicon.ico") {
         fs.readdir(req.app.locals.viewsdir, function(err, files) {
