@@ -14,20 +14,6 @@ exports.auth.index = function(req, res) {
     res.render("auth/index");
 };
 
-exports.auth.twitter = {};
-
-exports.auth.twitter.index = function(req, res) {
-    "use strict";
-    passport.authenticate("twitter");
-};
-
-exports.auth.twitter.callback= function(req, res) {
-    "use strict";
-    passport.authenticate("twitter", {
-        failureRedirect: "/auth"
-    });
-};
-
 exports.contact = {};
 
 exports.contact.send = function(req, res) {

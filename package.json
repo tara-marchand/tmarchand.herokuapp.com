@@ -13,7 +13,7 @@
     "passport-twitter": "~1.0.2",
     "passport": "~0.2.0",
     "mongodb": "~1.4.0",
-    "mongoose": "~3.8.8"
+    "mongoose": "^3.8.8"
   },
   "devDependencies": {
     "grunt": "^0.4.4",
