@@ -9,6 +9,8 @@ var routes = require("./routes");
 
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
+var ConnectRoles = require("connect-roles");
+var roles = new ConnectRoles();
 var passport = require("passport");
 var TwitterStrategy = require("passport-twitter").Strategy;
 var sendgrid = require("sendgrid")(
@@ -110,8 +112,17 @@ var setNavItems = function() {
 
 setNavItems();
 
+/* authorization */
+roles.use(function (req) {
+    "use strict";
+    if (req.user.role === "admin") {
+        return true;
+    }
+});
+
 /* routes */
 app.get("/", routes.index);
+app.get("/admin", routes.admin.index);
 app.get("/auth", routes.auth.index);
 app.get("/auth/twitter", passport.authenticate("twitter"), function(req, res) {
 });

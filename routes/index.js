@@ -4,7 +4,14 @@ var markdown = require("markdown").markdown;
 
 exports.index = function(req, res){
     "use strict";
-    res.render("index");
+    res.render("index", { user: req.user });
+};
+
+exports.admin = {};
+
+exports.admin.index = function(req, res) {
+    "use strict";
+    res.render("admin/index");
 };
 
 exports.auth = {};
