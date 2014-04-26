@@ -3,28 +3,18 @@ var fs = require("fs");
 var markdown = require("markdown").markdown;
 
 exports.index = function(req, res){
-    "use strict";
-    res.render("index", { user: req.user });
+    res.render("index");
 };
 
 exports.admin = {};
 
 exports.admin.index = function(req, res) {
-    "use strict";
     res.render("admin/index");
-};
-
-exports.auth = {};
-
-exports.auth.index = function(req, res) {
-    "use strict";
-    res.render("auth/index");
 };
 
 exports.contact = {};
 
 exports.contact.send = function(req, res) {
-    "use strict";
     var from = req.body.from;
     var subject = req.body.subject;
     var message = req.body.message;
@@ -45,7 +35,6 @@ exports.contact.send = function(req, res) {
 };
 
 exports.page = function(req, res) {
-    "use strict";
     if (req.params.page !== "favicon.ico") {
         fs.readdir(req.app.locals.viewsdir, function(err, files) {
             if (files.indexOf(req.params.page + ".markdown") > -1) {

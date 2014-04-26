@@ -15,6 +15,14 @@
                 <li><a href="/{{this}}">{{this}}</a></li>
                 {{/each}}
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {{#if user}}
+                <li class="navbar-text">Hi, {{user.name}}</li>
+                <li><a href="/logout">Log Out</a></li>
+                {{else}}
+                <li><a href="/auth/twitter">Log In with Twitter</a></li>
+                {{/if}}
+            </ul>
         </div>
-    </div>
+      </div>
 </nav>
