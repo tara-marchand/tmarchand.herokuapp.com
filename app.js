@@ -9,8 +9,6 @@ var routes = require("./routes");
 
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-var ConnectRoles = require("connect-roles");
-var roles = new ConnectRoles();
 var passport = require("passport");
 var TwitterStrategy = require("passport-twitter").Strategy;
 var sendgrid = require("sendgrid")(
@@ -27,6 +25,31 @@ app.locals.viewsdir = path.join(__dirname, "views");
 
 app.use(express.static(__dirname + "/public"));
 app.use("/bower_components",  express.static(__dirname + "/bower_components"));
+
+function setNavItems(req, res, next) {
+	var navItems = [];
+	var stringsToExclude = ["index", "404", "markdown"];
+	var path = __dirname + "/views";
+	var files = fs.readdirSync(path);
+
+	var file;
+	var fileNoExt;
+	var filePath;
+	var fileStats;
+	for (var i in files) {
+		file = files[i];
+		fileNoExt = file.replace(".handlebars", "").replace(".markdown", "");
+		filePath = path + "/" + file;
+		fileStats = fs.statSync(filePath);
+		if (fileStats.isFile() && stringsToExclude.indexOf(fileNoExt) === -1 && fileNoExt[0] !== ".") {
+			navItems.push(fileNoExt);
+		}
+	}
+	app.set("navItems", navItems);
+	next();
+}
+app.use(setNavItems);
+
 app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.session({ secret: process.env.SESSION_SECRET }));
@@ -99,40 +122,20 @@ passport.deserializeUser(function(uid, done) {
 	});
 });
 
-var setNavItems = function() {
-	var navItems = [];
-	var stringsToExclude = ["index", "404", "markdown"];
-	var path = __dirname + "/views";
-	var files = fs.readdirSync(path);
-
-	var file;
-	var fileNoExt;
-	var filePath;
-	var fileStats;
-	for (var i in files) {
-		file = files[i];
-		fileNoExt = file.replace(".handlebars", "").replace(".markdown", "");
-		filePath = path + "/" + file;
-		fileStats = fs.statSync(filePath);
-		if (fileStats.isFile() && stringsToExclude.indexOf(fileNoExt) === -1 && fileNoExt[0] !== ".") {
-			navItems.push(fileNoExt);
-		}
-	}
-	app.set("navItems", navItems);
-};
-
-setNavItems();
-
 /* authorization */
-roles.use(function (req) {
-	if (req.user.role === "admin") {
-		return true;
-	}
-});
+var requireRole = function(role) {
+	return function(req, res, next) {
+		if("user" in req.session && req.session.user.role === role) {
+			next();
+		} else {
+			res.send(403);
+		}
+	};
+};
 
 /* routes */
 app.get("/", routes.index);
-app.get("/admin", routes.admin.index);
+app.get("/admin", requireRole("admin"), routes.admin.index);
 app.get("/auth/twitter", passport.authenticate("twitter"), function(req, res) {
 });
 app.get("/auth/twitter/callback", passport.authenticate("twitter", {
