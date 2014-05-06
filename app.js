@@ -5,7 +5,6 @@ var path = require("path");
 var express = require("express");
 var exphbs = require("express3-handlebars");
 var app = express();
-var routes = require("./routes");
 
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
@@ -55,17 +54,12 @@ app.use(express.cookieParser());
 app.use(express.session({ secret: process.env.SESSION_SECRET }));
 app.use(passport.initialize());
 app.use(passport.session());
-// add user to all routes
-app.use(function (req, res, next) {
-	res.locals({
-		get user() { // as a getter to delay retrieval until `res.render()`
-			return req.user;
-		},
-		isAuthenticated: function () {
-			return req.user !== null;
-		}
-	});
-	next();
+app.use(function(req, res, next) {
+    res.locals.user = null;
+    if (req.user) {
+        res.locals.user = req.user;
+    }
+    next();
 });
 app.use(express.logger("dev"));
 app.use(app.router);
@@ -122,34 +116,8 @@ passport.deserializeUser(function(uid, done) {
 	});
 });
 
-/* authorization */
-var requireRole = function(role) {
-	return function(req, res, next) {
-		if("user" in req.session && req.session.user.role === role) {
-			next();
-		} else {
-			res.send(403);
-		}
-	};
-};
-
 /* routes */
-app.get("/", routes.index);
-app.get("/admin", requireRole("admin"), routes.admin.index);
-app.get("/auth/twitter", passport.authenticate("twitter"), function(req, res) {
-});
-app.get("/auth/twitter/callback", passport.authenticate("twitter", {
-		failureRedirect: "/auth"
-	}), function(req, res) {
-		res.redirect("/");
-	}
-);
-app.get("/logout", function(req, res){
-	req.logout();
-	res.redirect("/");
-});
-app.post("/contact/send", routes.contact.send);
-app.get("/:page", routes.page);
+var routes = require("./routes.js")(app, passport);
 
 /* start */
 app.listen(port);
