@@ -16,11 +16,34 @@ var sendgrid = require("sendgrid")(
 );
 var newrelic = require("newrelic");
 
+app.locals.viewsdir = path.join(__dirname, "views");
+app.locals.scripts = [];
+
+var renderScriptTags = function (all) {
+	app.locals.scripts = [];
+	if (all !== undefined) {
+		return all.map(function(script) {
+			return "<script src=\"scripts/" + script + "\"></script>";
+		}).join("\n ");
+	} else {
+		return "";
+	}
+};
+
 app.engine("handlebars", exphbs({
-	defaultLayout: "index"
+	defaultLayout: "index",
+	helpers: {
+		// render script tags in layout
+		renderScriptTags: function(all) {
+			return renderScriptTags(all);
+		},
+		// add script from view
+		addScript: function(script) {
+			app.locals.scripts.push(script);
+		}
+	}
 }));
 app.set("view engine", "handlebars");
-app.locals.viewsdir = path.join(__dirname, "views");
 
 app.use(express.static(__dirname + "/public"));
 app.use("/bower_components",  express.static(__dirname + "/bower_components"));
