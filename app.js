@@ -23,7 +23,11 @@ var renderScriptTags = function (all) {
 	app.locals.scripts = [];
 	if (all !== undefined) {
 		return all.map(function(script) {
-			return "<script src=\"scripts/" + script + "\"></script>";
+			if (script.indexOf("//") > -1) {
+				return "<script src=\"" + script + "\"></script>";
+			} else {
+				return "<script src=\"scripts/" + script + "\"></script>";
+			}
 		}).join("\n ");
 	} else {
 		return "";
