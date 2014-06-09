@@ -17,36 +17,77 @@ var sendgrid = require("sendgrid")(
 var newrelic = require("newrelic");
 
 app.locals.viewsdir = path.join(__dirname, "views");
-app.locals.scripts = [];
 
-var renderScriptTags = function (all) {
+/* Angular app and body controller */
+app.locals.angular = {
+	appValue: "",
+	bodyController: ""
+};
+function renderAngularApp(appValue) {
+	app.locals.angular.appValue = "";
+	if (appValue !== undefined && appValue !== "") {
+		return " ng-app=\"" + appValue + "\"";
+	}
+	return false;
+}
+function renderAngularBodyController(bodyController) {
+	app.locals.angular.bodyController = "";
+	if (bodyController !== undefined && bodyController !== "") {
+		return " ng-controller=\"" + bodyController + "\"";
+	}
+	return false;
+}
+
+/* page-specific JS */
+app.locals.scripts = [];
+function renderScriptTags(scripts) {
 	app.locals.scripts = [];
-	if (all !== undefined) {
-		return all.map(function(script) {
+	if (scripts !== undefined) {
+		return scripts.map(function(script) {
 			if (script.indexOf("//") > -1) {
 				return "<script src=\"" + script + "\"></script>";
 			} else {
-				return "<script src=\"scripts/" + script + "\"></script>";
+				return "<script src=\"" + script + "\"></script>";
 			}
 		}).join("\n ");
 	} else {
 		return "";
 	}
-};
+}
 
-app.engine("handlebars", exphbs({
+/* Handlebars instance */
+var hbs = exphbs.create({
 	defaultLayout: "index",
 	helpers: {
 		// render script tags in layout
-		renderScriptTags: function(all) {
-			return renderScriptTags(all);
+		scriptTags: function(scripts) {
+			return renderScriptTags(scripts);
 		},
 		// add script from view
 		addScript: function(script) {
 			app.locals.scripts.push(script);
+		},
+		angularApp: function(appValue) {
+			var angularAppValue = renderAngularApp(appValue);
+			if (angularAppValue !== false) {
+				return new hbs.handlebars.SafeString(angularAppValue);
+			}
+		},
+		setAngularApp: function(appValue) {
+			app.locals.angular.appValue = appValue;
+		},
+		angularBodyController: function(bodyController) {
+			var angularBodyControllerValue = renderAngularBodyController(bodyController);
+			if (angularBodyControllerValue !== false) {
+				return new hbs.handlebars.SafeString(angularBodyControllerValue);
+			}
+		},
+		setAngularBodyController: function(bodyController) {
+			app.locals.angular.bodyController = bodyController;
 		}
 	}
-}));
+});
+app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
 app.use(express.static(__dirname + "/public"));
