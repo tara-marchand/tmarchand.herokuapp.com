@@ -1,4 +1,4 @@
 angular.module("d3Demo")
-    .controller("d3DemoController", [function d3DemoController() {
+    .controller("d3DemoController", ["d3DemoService", function d3DemoController(d3DemoService) {
         "use strict";
     }]);
