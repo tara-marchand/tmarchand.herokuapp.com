@@ -20,20 +20,20 @@ app.locals.viewsdir = path.join(__dirname, "views");
 
 /* Angular app and body controller */
 app.locals.angular = {
-	appValue: "",
-	bodyController: ""
+	appName: "",
+	appControllerName: ""
 };
-function renderAngularApp(appValue) {
-	app.locals.angular.appValue = "";
-	if (appValue !== undefined && appValue !== "") {
-		return " ng-app=\"" + appValue + "\"";
+function renderAngularApp(appName) {
+	app.locals.angular.appName = "";
+	if (appName !== undefined && appName !== "") {
+		return " ng-app=\"" + appName + "\"";
 	}
 	return false;
 }
-function renderAngularBodyController(bodyController) {
-	app.locals.angular.bodyController = "";
-	if (bodyController !== undefined && bodyController !== "") {
-		return " ng-controller=\"" + bodyController + "\"";
+function renderAngularAppController(appControllerName) {
+	app.locals.angular.appControllerName = "";
+	if (appControllerName !== undefined && appControllerName !== "") {
+		return " ng-controller=\"" + appControllerName + "\"";
 	}
 	return false;
 }
@@ -67,23 +67,23 @@ var hbs = exphbs.create({
 		addScript: function(script) {
 			app.locals.scripts.push(script);
 		},
-		angularApp: function(appValue) {
-			var angularAppValue = renderAngularApp(appValue);
-			if (angularAppValue !== false) {
-				return new hbs.handlebars.SafeString(angularAppValue);
+		getAngularApp: function(appName) {
+			var angularAppName = renderAngularApp(appName);
+			if (angularAppName !== false) {
+				return new hbs.handlebars.SafeString(angularAppName);
 			}
 		},
-		setAngularApp: function(appValue) {
-			app.locals.angular.appValue = appValue;
+		setAngularApp: function(appName) {
+			app.locals.angular.appName = appName;
 		},
-		angularBodyController: function(bodyController) {
-			var angularBodyControllerValue = renderAngularBodyController(bodyController);
-			if (angularBodyControllerValue !== false) {
-				return new hbs.handlebars.SafeString(angularBodyControllerValue);
+		getAngularAppController: function(appControllerName) {
+			var angularAppControllerName = renderAngularAppController(appControllerName);
+			if (angularAppControllerName !== false) {
+				return new hbs.handlebars.SafeString(angularAppControllerName);
 			}
 		},
-		setAngularBodyController: function(bodyController) {
-			app.locals.angular.bodyController = bodyController;
+		setAngularAppController: function(appControllerName) {
+			app.locals.angular.appControllerName = appControllerName;
 		}
 	}
 });
