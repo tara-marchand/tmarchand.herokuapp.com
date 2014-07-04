@@ -4,6 +4,7 @@ var path = require("path");
 
 var express = require("express");
 var exphbs = require("express3-handlebars");
+var expressState = require("express-state");
 var app = express();
 
 var mongoose = require("mongoose");
@@ -16,6 +17,8 @@ var sendgrid = require("sendgrid")(
 );
 var newrelic = require("newrelic");
 
+expressState.extend(app);
+
 app.locals.viewsdir = path.join(__dirname, "views");
 
 /* Angular app and body controller */
@@ -23,6 +26,7 @@ app.locals.angular = {
 	appName: "",
 	appControllerName: ""
 };
+
 function renderAngularApp(appName) {
 	app.locals.angular.appName = "";
 	if (appName !== undefined && appName !== "") {
@@ -30,6 +34,7 @@ function renderAngularApp(appName) {
 	}
 	return false;
 }
+
 function renderAngularAppController(appControllerName) {
 	app.locals.angular.appControllerName = "";
 	if (appControllerName !== undefined && appControllerName !== "") {
@@ -37,6 +42,12 @@ function renderAngularAppController(appControllerName) {
 	}
 	return false;
 }
+
+/* expose config to client side */
+app.set("state namespace", "tmarchand");
+app.expose({
+	socrataAppToken: process.env.SOCRATA_APP_TOKEN
+}, "env");
 
 /* page-specific JS */
 app.locals.scripts = [];
