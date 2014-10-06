@@ -22,6 +22,7 @@
   "dependencies": {
     "bootstrap-sass": "twbs/bootstrap-sass#~3.1.1",
     "d3": "~3.4.8",
-    "angular": "~1.2.17"
+    "backbone": "~1.1.2",
+    "jquery": "~2.1.1"
   }
 }

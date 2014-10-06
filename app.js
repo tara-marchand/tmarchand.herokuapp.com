@@ -21,28 +21,6 @@ expressState.extend(app);
 
 app.locals.viewsdir = path.join(__dirname, "views");
 
-/* Angular app and body controller */
-app.locals.angular = {
-	appName: "",
-	appControllerName: ""
-};
-
-function renderAngularApp(appName) {
-	app.locals.angular.appName = "";
-	if (appName !== undefined && appName !== "") {
-		return " ng-app=\"" + appName + "\"";
-	}
-	return false;
-}
-
-function renderAngularAppController(appControllerName) {
-	app.locals.angular.appControllerName = "";
-	if (appControllerName !== undefined && appControllerName !== "") {
-		return " ng-controller=\"" + appControllerName + "\"";
-	}
-	return false;
-}
-
 /* expose config to client side */
 app.set("state namespace", "tmarchand");
 app.expose({
@@ -77,24 +55,6 @@ var hbs = exphbs.create({
 		// add script from view
 		addScript: function(script) {
 			app.locals.scripts.push(script);
-		},
-		getAngularApp: function(appName) {
-			var angularAppName = renderAngularApp(appName);
-			if (angularAppName !== false) {
-				return new hbs.handlebars.SafeString(angularAppName);
-			}
-		},
-		setAngularApp: function(appName) {
-			app.locals.angular.appName = appName;
-		},
-		getAngularAppController: function(appControllerName) {
-			var angularAppControllerName = renderAngularAppController(appControllerName);
-			if (angularAppControllerName !== false) {
-				return new hbs.handlebars.SafeString(angularAppControllerName);
-			}
-		},
-		setAngularAppController: function(appControllerName) {
-			app.locals.angular.appControllerName = appControllerName;
 		}
 	}
 });
