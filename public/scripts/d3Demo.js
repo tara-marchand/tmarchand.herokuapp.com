@@ -74,20 +74,19 @@ var BarsView = Backbone.View.extend({
             .attr("height", h);
 
         var bars = svg.selectAll("rect")
-            .data(neighborhoods);
-
-        bars.enter().append("rect");
-
-        bars.attr("x", function(d, i) {
-            return 25 * i;
-        })
-        .attr("y", function(d, i) {
-                return h - d.count; // box height - bar height
+            .data(neighborhoods)
+            .enter()
+            .append("rect")
+            .attr("x", function(d, i) {
+                return 25 * i;
             })
-        .attr("width", 20)
-        .attr("height", function(d, i) {
-            return d.count;
-        });
+            .attr("y", function(d, i) {
+                    return h - d.count; // box height - bar height
+                })
+            .attr("width", 20)
+            .attr("height", function(d, i) {
+                return d.count;
+            });
     }
 });
 

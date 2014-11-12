@@ -3,7 +3,7 @@ var fs = require("fs");
 var path = require("path");
 
 var express = require("express");
-var exphbs = require("express3-handlebars");
+var exphbs = require("express-handlebars");
 var expressState = require("express-state");
 var app = express();
 
