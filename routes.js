@@ -60,12 +60,18 @@ module.exports = function(app, passport) {
                         }
                     });
                 } else {
-                    res.render(req.params.page, {}, function(err, html) { // render handlebars
-                        if (err) {
-                            res.render("404");
-                        } else {
-                            res.end(html);
+                    fs.readFile(req.app.locals.modelsdir + "/" + req.params.page + ".json", function(err2, data2) {
+                        var model = {};
+                        if (!err2) {
+                            model = JSON.parse(data2);
                         }
+                        res.render(req.params.page, model, function(err, html) { // render handlebars
+                            if (err) {
+                                res.render("404");
+                            } else {
+                                res.end(html);
+                            }
+                        });
                     });
                 }
             });

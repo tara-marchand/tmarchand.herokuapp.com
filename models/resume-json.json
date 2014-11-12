@@ -1,0 +1,175 @@
+{
+    "basics": {
+        "name": "Tara Marchand",
+        "label": "",
+        "picture": "",
+        "email": "tara@mac.com",
+        "phone": "415-518-0678",
+        "website": "http://www.tmarchand.com/",
+        "summary": "",
+        "location": {
+            "address": "",
+            "postalCode": "",
+            "city": "San Francisco",
+            "countryCode": "US",
+            "region": "California"
+        },
+        "profiles": [
+            {
+                "network": "GitHub",
+                "username": "tara-marchand",
+                "url": "https://github.com/tara-marchand"
+            },
+            {
+                "network": "LinkedIn",
+                "username": "trmarch",
+                "url": "http://www.linkedin.com/in/trmarch/"
+            },
+            {
+                "network": "Twitter",
+                "username": "trmarchand",
+                "url": "https://twitter.com/trmarchand"
+            }
+        ]
+    },
+    "work": [
+        {
+            "company": "R/GA",
+            "position": "Front End Solutions Architect; Senior Presentation Code Developer",
+            "website": "http://www.rga.com/",
+            "startDate": "2009",
+            "endDate": "present",
+            "summary": "",
+            "highlights": [
+                ""
+            ]
+        },
+        {
+            "company": "DHAP Digital",
+            "position": "User Interface Developer",
+            "website": "http://www.dhapdigital.com/",
+            "startDate": "2007",
+            "endDate": "2009",
+            "summary": "",
+            "highlights": [
+                ""
+            ]
+        },
+        {
+            "company": "Publicis Modem",
+            "position": "Senior User Interface Developer",
+            "website": "",
+            "startDate": "2005",
+            "endDate": "2007",
+            "summary": "",
+            "highlights": [
+                ""
+            ]
+        }
+        {
+            "company": "Office of Educational Technology, UC San Francisco School of Medicine",
+            "position": "Educational Technology Developer",
+            "website": "http://meded.ucsf.edu/tel",
+            "startDate": "2003",
+            "endDate": "2004",
+            "summary": "",
+            "highlights": [
+                ""
+            ]
+        }
+        {
+            "company": "Principal Web Designer",
+            "position": "UC Berkeley Extension Online",
+            "website": "",
+            "startDate": "2000",
+            "endDate": "2003",
+            "summary": "",
+            "highlights": [
+                ""
+            ]
+        }
+    ],
+    "volunteer": [
+        {
+            "organization": "",
+            "position": "",
+            "website": "",
+            "startDate": "",
+            "endDate": "",
+            "summary": "",
+            "highlights": [
+                ""
+            ]
+        }
+    ],
+    "education": [
+        {
+            "institution": "University of California, Santa Barbara",
+            "area": "Biopsychology",
+            "studyType": "MA",
+            "startDate": "1994",
+            "endDate": "1996",
+            "gpa": "",
+            "courses": [
+                ""
+            ]
+        },
+        {
+            "institution": "University of California, Davis",
+            "area": "Psychology (Biology Emphasis)",
+            "studyType": "BS",
+            "startDate": "1990",
+            "endDate": "1994",
+            "gpa": "",
+            "courses": [
+                ""
+            ]
+        }
+    ],
+    "awards": [
+        {
+            "title": "",
+            "date": "",
+            "awarder": "",
+            "summary": ""
+        }
+    ],
+    "publications": [
+        {
+            "name": "",
+            "publisher": "",
+            "releaseDate": "",
+            "website": "",
+            "summary": ""
+        }
+    ],
+    "skills": [
+        {
+            "name": "",
+            "level": "",
+            "keywords": [
+                ""
+            ]
+        }
+    ],
+    "languages": [
+        {
+            "language": "",
+            "fluency": ""
+        }
+    ],
+    "interests": [
+        {
+            "name": "",
+            "keywords": [
+                ""
+            ]
+        }
+    ],
+    "references": [
+        {
+            "name": "",
+            "reference": ""
+        }
+    ]
+}

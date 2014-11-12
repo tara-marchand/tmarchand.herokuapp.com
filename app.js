@@ -20,6 +20,7 @@ var newrelic = require("newrelic");
 expressState.extend(app);
 
 app.locals.viewsdir = path.join(__dirname, "views");
+app.locals.modelsdir = path.join(__dirname, "models");
 
 /* expose config to client side */
 app.set("state namespace", "tmarchand");
