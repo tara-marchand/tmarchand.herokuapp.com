@@ -60,7 +60,7 @@ module.exports = function(app, passport) {
                         }
                     });
                 } else {
-                    fs.readFile(req.app.locals.modelsdir + "/" + req.params.page + ".json", function(err2, data2) {
+                    fs.readFile(req.app.locals.modelsdir + "/" + req.params.page + ".json", "utf8", function(err2, data2) {
                         var model = {};
                         if (!err2) {
                             model = JSON.parse(data2);

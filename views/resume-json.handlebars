@@ -1,6 +1,6 @@
     <div id="resume">
 
-    {{#resume.basics}}
+    {{#basics}}
     <h1>{{name}}</h1>
     <h2>{{label}}</h2>
     <section id="basics">
@@ -89,12 +89,12 @@
         </section>
         {{/if}}
     </section>
-    {{/resume.basics}}
+    {{/basics}}
 
-    {{#if resume.work.length}}
+    {{#if work.length}}
     <section id="work">
         <h2>Work</h2>
-        {{#each resume.work}}
+        {{#each work}}
         <div class="item">
             {{#if company}}
             <h3 class="name">
@@ -144,10 +144,10 @@
     </section>
     {{/if}}
 
-    {{#if resume.volunteer.length}}
+    {{#if volunteer.length}}
     <section id="volunteer">
         <h2>Volunteer</h2>
-        {{#each resume.volunteer}}
+        {{#each volunteer}}
         <div class="item">
             {{#if organization}}
             <h3 class="company">
@@ -196,11 +196,11 @@
         {{/each}}
     </section>
     {{/if}}
-    
-    {{#if resume.education.length}}
+
+    {{#if education.length}}
     <section id="education">
         <h2>Education</h2>
-        {{#each resume.education}}
+        {{#each education}}
         <div class="item">
             <div class="date">
                 {{#if startDate}}
@@ -249,11 +249,11 @@
         {{/each}}
     </section>
     {{/if}}
-    
-    {{#if resume.awards.length}}
+
+    {{#if awards.length}}
     <section id="awards">
         <h2>Awards</h2>
-        {{#each resume.awards}}
+        {{#each awards}}
         <div class="item">
             {{#if title}}
             <div class="title">
@@ -279,11 +279,11 @@
         {{/each}}
     </section>
     {{/if}}
-    
-    {{#if resume.publications.length}}
+
+    {{#if publications.length}}
     <section id="publications">
         <h2>Publications</h2>
-        {{#each resume.publications}}
+        {{#each publications}}
         <div class="item">
             {{#if name}}
             <div class="name">
@@ -314,11 +314,11 @@
         {{/each}}
     </section>
     {{/if}}
-    
-    {{#if resume.skills.length}}
+
+    {{#if skills.length}}
     <section id="skills">
         <h2>Skills</h2>
-        {{#each resume.skills}}
+        {{#each skills}}
         <div class="item">
             {{#if name}}
             <div class="name">
@@ -342,10 +342,10 @@
     </section>
     {{/if}}
 
-    {{#if resume.languages.length}}
+    {{#if languages.length}}
     <section id="languages">
         <h2>Languages</h2>
-        {{#each resume.languages}}
+        {{#each languages}}
         <div class="item">
             {{#if language}}
             <div class="language">
@@ -362,10 +362,10 @@
     </section>
     {{/if}}
 
-    {{#if resume.interests.length}}
+    {{#if interests.length}}
     <section id="interests">
         <h2>Interests</h2>
-        {{#each resume.interests}}
+        {{#each interests}}
         <div class="item">
             {{#if name}}
             <div class="name">
@@ -383,11 +383,11 @@
         {{/each}}
     </section>
     {{/if}}
-    
-    {{#if resume.references.length}}
+
+    {{#if references.length}}
     <section id="references">
         <h2>References</h2>
-        {{#each resume.references}}
+        {{#each references}}
         <div class="item">
             {{#if reference}}
             <blockquote class="reference">
@@ -403,5 +403,5 @@
         {{/each}}
     </section>
     {{/if}}
-    
+
     </div>
