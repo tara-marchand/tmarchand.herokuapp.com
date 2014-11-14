@@ -28,22 +28,8 @@ app.expose({
 	socrataAppToken: process.env.SOCRATA_APP_TOKEN
 }, "env");
 
-/* page-specific JS */
 app.locals.scripts = [];
-function renderScriptTags(scripts) {
-	app.locals.scripts = [];
-	if (scripts !== undefined) {
-		return scripts.map(function(script) {
-			if (script.indexOf("//") > -1) {
-				return "<script src=\"" + script + "\"></script>";
-			} else {
-				return "<script src=\"" + script + "\"></script>";
-			}
-		}).join("\n ");
-	} else {
-		return "";
-	}
-}
+app.locals.stylesheets = [];
 
 /* Handlebars instance */
 var hbs = exphbs.create({
@@ -51,11 +37,35 @@ var hbs = exphbs.create({
 	helpers: {
 		// render script tags in layout
 		scriptTags: function(scripts) {
-			return renderScriptTags(scripts);
+			app.locals.scripts = [];
+			if (scripts !== undefined) {
+				return scripts.map(function(script) {
+					if (script.indexOf("//") > -1) {
+						return "<script src=\"" + script + "\"></script>";
+					} else {
+						return "<script src=\"" + script + "\"></script>";
+					}
+				}).join("\n ");
+			} else {
+				return "";
+			}
 		},
 		// add script from view
 		addScript: function(script) {
 			app.locals.scripts.push(script);
+		},
+		// render stylesheet tags in layout
+		stylesheetTags: function(stylesheets) {
+			app.locals.stylesheets = [];
+			if (stylesheets !== undefined) {
+				return stylesheets.map(function(stylesheet) {
+					return "<link rel=\"stylesheet\" href=\"" + stylesheet + "\">";
+				}).join("\n ");
+			}
+		},
+		// add stylesheet from view
+		addStylesheet: function(stylesheet) {
+			app.locals.stylesheets.push(stylesheet);
 		}
 	}
 });
