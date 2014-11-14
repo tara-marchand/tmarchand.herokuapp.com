@@ -1,14 +1,11 @@
 var port = Number(process.env.PORT || 5000);
+
 var fs = require("fs");
 var path = require("path");
-
 var express = require("express");
 var exphbs = require("express-handlebars");
 var expressState = require("express-state");
-var app = express();
-
 var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
 var passport = require("passport");
 var TwitterStrategy = require("passport-twitter").Strategy;
 var sendgrid = require("sendgrid")(
@@ -16,6 +13,9 @@ var sendgrid = require("sendgrid")(
   process.env.SENDGRID_PASSWORD
 );
 var newrelic = require("newrelic");
+
+var app = express();
+var Schema = mongoose.Schema;
 
 expressState.extend(app);
 
