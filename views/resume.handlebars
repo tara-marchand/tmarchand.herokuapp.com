@@ -1,3 +1,5 @@
+{{addStylesheet "stylesheets/resume.css"}}
+
     <div id="resume">
 
     {{#basics}}
@@ -7,63 +9,32 @@
         <div class="contact">
         {{#if website}}
         <div class="website">
-            <strong>Website</strong>
-            {{website}}
+            <a href="{{website}}">{{website}}</a>
         </div>
         {{/if}}
         {{#if email}}
         <div class="email">
-            <strong>Email</strong>
-            {{email}}
+            <a href="mailto:{{email}}">{{email}}</a>
         </div>
         {{/if}}
         {{#if phone}}
         <div class="phone">
-            <strong>Phone</strong>
             {{phone}}
         </div>
         {{/if}}
+        {{#location}}
+        {{#if city}}
+        <div class="city">
+            {{city}}{{#if region}}, {{region}}{{/if}}
+        </div>
+        {{/if}}
+        {{/location}}
         </div>
         {{#if summary}}
         <div class="summary">
             <p>{{summary}}</p>
         </div>
         {{/if}}
-        {{#location}}
-        <h3>Location</h3>
-        <section id="location">
-            {{#if address}}
-            <div class="address">
-                <strong>Address</strong>
-                {{address}}
-            </div>
-            {{/if}}
-            {{#if postalCode}}
-            <div class="postalCode">
-                <strong>Postal code</strong>
-                {{postalCode}}
-            </div>
-            {{/if}}
-            {{#if city}}
-            <div class="city">
-                <strong>City</strong>
-                {{city}}
-            </div>
-            {{/if}}
-            {{#if countryCode}}
-            <div class="countryCode">
-                <strong>Country code</strong>
-                {{countryCode}}
-            </div>
-            {{/if}}
-            {{#if region}}
-            <div class="region">
-                <strong>Region</strong>
-                {{region}}
-            </div>
-            {{/if}}
-        </section>
-        {{/location}}
         {{#if profiles.length}}
         <h3>Profiles</h3>
         <section id="profiles">
@@ -71,18 +42,8 @@
             <div class="item">
                 {{#if network}}
                 <strong class="network">
-                    {{network}}
+                    {{#if url}}<a href="{{url}}">{{/if}}{{network}}{{#if url}}</a>{{/if}}
                 </strong>
-                {{/if}}
-                {{#if username}}
-                <div class="username">
-                    {{username}}
-                </div>
-                {{/if}}
-                {{#if url}}
-                <div class="url">
-                    <a href="{{url}}">Link</a>
-                </div>
                 {{/if}}
             </div>
             {{/each}}
@@ -96,10 +57,15 @@
         <h2>Work</h2>
         {{#each work}}
         <div class="item">
-            {{#if company}}
-            <h3 class="name">
-                {{company}}
+            {{#if position}}
+            <h3 class="position">
+                {{position}}
             </h3>
+            {{/if}}
+            {{#if company}}
+            <div class="name">
+                {{#if website}}<a href="{{website}}">{{/if}}{{company}}{{#if website}}</a>{{/if}}
+            </div>
             {{/if}}
             <div class="date">
                 {{#if startDate}}
@@ -117,16 +83,6 @@
                 </span>
                 {{/if}}
             </div>
-            {{#if position}}
-            <div class="position">
-                {{position}}
-            </div>
-            {{/if}}
-            {{#if website}}
-            <div class="website">
-                <a href="{{website}}">{{website}}</a>
-            </div>
-            {{/if}}
             {{#if summary}}
             <div class="summary">
                 <p>{{summary}}</p>
@@ -202,22 +158,6 @@
         <h2>Education</h2>
         {{#each education}}
         <div class="item">
-            <div class="date">
-                {{#if startDate}}
-                <span class="startDate">
-                    {{startDate}}
-                </span>
-                {{/if}}
-                {{#if endDate}}
-                <span class="endDate">
-                    - {{endDate}}
-                </span>
-                {{else}}
-                <span class="endDate">
-                    - Present
-                </span>
-                {{/if}}
-            </div>
             {{#if institution}}
             <div class="institution">
                 {{institution}}
@@ -225,12 +165,7 @@
             {{/if}}
             {{#if area}}
             <div class="area">
-                {{area}}
-            </div>
-            {{/if}}
-            {{#if studyType}}
-            <div class="studyType">
-                {{studyType}}
+                {{#if studyType}}{{studyType}}, {{/if}}{{area}}
             </div>
             {{/if}}
             {{#if gpa}}

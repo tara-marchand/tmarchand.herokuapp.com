@@ -53,7 +53,9 @@ module.exports = function(app, passport) {
                         if (err) {
                             res.render("404");
                         } else {
-                            var markup = markdown.toHTML(data.toString()); // render markdown
+                            var dataString = data.toString();
+                            var markup = markdown.toHTML(dataString); // render markdown
+                            console.log(markup);
                             res.render("markdown", {
                                 data: markup
                             });

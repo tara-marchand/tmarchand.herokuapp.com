@@ -12,7 +12,7 @@
             "postalCode": "",
             "city": "San Francisco",
             "countryCode": "US",
-            "region": "California"
+            "region": "CA"
         },
         "profiles": [
             {
@@ -39,9 +39,12 @@
             "website": "http://www.rga.com/",
             "startDate": "2009",
             "endDate": "present",
-            "summary": "",
+            "summary": "I'm a technology lead, architect, and developer at R/GA San Francisco, working with such top-tier clients such as Nike, Microsoft, and HP.",
             "highlights": [
-                ""
+                "Lead a team of UI engineers for Nike's global events platform",
+                "Developed the first website for Microsoft's Surface tablet",
+                "Helped launch the Nike+ FuelBand fitness tracker web application",
+                "Built and applied fresh new design to Taco Bell's website"
             ]
         },
         {
@@ -50,9 +53,10 @@
             "website": "http://www.dhapdigital.com/",
             "startDate": "2007",
             "endDate": "2009",
-            "summary": "",
+            "summary": "At DHAP, I developed sites for some of the biggest brands in software and cars, Adobe and Toyota (including Lexus and Scion).",
             "highlights": [
-                ""
+                "Developed the first Adobe site (Marketplace) for software extensions and other add-ons",
+                "Maintained and enhanced Lexus.com and websites for related car brands Toyota and Scion"
             ]
         },
         {
@@ -89,19 +93,6 @@
             ]
         }
     ],
-    "volunteer": [
-        {
-            "organization": "",
-            "position": "",
-            "website": "",
-            "startDate": "",
-            "endDate": "",
-            "summary": "",
-            "highlights": [
-                ""
-            ]
-        }
-    ],
     "education": [
         {
             "institution": "University of California, Santa Barbara",
@@ -109,10 +100,7 @@
             "studyType": "MA",
             "startDate": "1994",
             "endDate": "1996",
-            "gpa": "",
-            "courses": [
-                ""
-            ]
+            "gpa": ""
         },
         {
             "institution": "University of California, Davis",
@@ -120,56 +108,7 @@
             "studyType": "BS",
             "startDate": "1990",
             "endDate": "1994",
-            "gpa": "",
-            "courses": [
-                ""
-            ]
-        }
-    ],
-    "awards": [
-        {
-            "title": "",
-            "date": "",
-            "awarder": "",
-            "summary": ""
-        }
-    ],
-    "publications": [
-        {
-            "name": "",
-            "publisher": "",
-            "releaseDate": "",
-            "website": "",
-            "summary": ""
-        }
-    ],
-    "skills": [
-        {
-            "name": "",
-            "level": "",
-            "keywords": [
-                ""
-            ]
-        }
-    ],
-    "languages": [
-        {
-            "language": "",
-            "fluency": ""
-        }
-    ],
-    "interests": [
-        {
-            "name": "",
-            "keywords": [
-                ""
-            ]
-        }
-    ],
-    "references": [
-        {
-            "name": "",
-            "reference": ""
+            "gpa": ""
         }
     ]
 }
