@@ -6,22 +6,25 @@
     <h1>{{name}}</h1>
     <h2>{{label}}</h2>
     <section id="basics">
+
         <div class="contact">
-        {{#if website}}
-        <div class="website">
-            <a href="{{website}}">{{website}}</a>
-        </div>
-        {{/if}}
         {{#if email}}
-        <div class="email">
+        <span class="email">
             <a href="mailto:{{email}}">{{email}}</a>
-        </div>
+        </span>
         {{/if}}
         {{#if phone}}
-        <div class="phone">
-            {{phone}}
-        </div>
+        <span class="phone">
+            &middot; {{phone}}
+        </span>
         {{/if}}
+        {{#if website}}
+        <span class="website">
+            &middot; <a href="{{website}}">{{website}}</a>
+        </span>
+        {{/if}}
+        </div>
+
         {{#location}}
         {{#if city}}
         <div class="city">
@@ -29,7 +32,6 @@
         </div>
         {{/if}}
         {{/location}}
-        </div>
         {{#if summary}}
         <div class="summary">
             <p>{{summary}}</p>
@@ -39,13 +41,13 @@
         <h3>Profiles</h3>
         <section id="profiles">
             {{#each profiles}}
-            <div class="item">
+            <span class="item">
                 {{#if network}}
                 <strong class="network">
                     {{#if url}}<a href="{{url}}">{{/if}}{{network}}{{#if url}}</a>{{/if}}
                 </strong>
                 {{/if}}
-            </div>
+            </span>
             {{/each}}
         </section>
         {{/if}}
@@ -63,11 +65,9 @@
             </h3>
             {{/if}}
             {{#if company}}
-            <div class="name">
+            <div class="name-date">
                 {{#if website}}<a href="{{website}}">{{/if}}{{company}}{{#if website}}</a>{{/if}}
-            </div>
-            {{/if}}
-            <div class="date">
+                &middot;
                 {{#if startDate}}
                 <span class="startDate">
                     {{startDate}}
@@ -81,8 +81,9 @@
                 <span class="endDate">
                     - Present
                 </span>
-                {{/if}}
+                {{/if}} 
             </div>
+            {{/if}}
             {{#if summary}}
             <div class="summary">
                 <p>{{summary}}</p>

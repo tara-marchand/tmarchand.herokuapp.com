@@ -7,13 +7,6 @@
         "phone": "415-518-0678",
         "website": "http://www.tmarchand.com/",
         "summary": "",
-        "location": {
-            "address": "",
-            "postalCode": "",
-            "city": "San Francisco",
-            "countryCode": "US",
-            "region": "CA"
-        },
         "profiles": [
             {
                 "network": "GitHub",
@@ -35,16 +28,17 @@
     "work": [
         {
             "company": "R/GA",
-            "position": "Front End Solutions Architect; Senior Presentation Code Developer",
+            "position": "Front End Solutions Architect",
             "website": "http://www.rga.com/",
             "startDate": "2009",
             "endDate": "present",
-            "summary": "I'm a technology lead, architect, and developer at R/GA San Francisco, working with such top-tier clients such as Nike, Microsoft, and HP.",
+            "summary": "I'm a technology lead and front-end architect/developer at R/GA San Francisco, working with such top-tier clients such as Nike, Microsoft, and HP.",
             "highlights": [
                 "Lead a team of UI engineers for Nike's global events platform",
                 "Developed the first website for Microsoft's Surface tablet",
-                "Helped launch the Nike+ FuelBand fitness tracker web application",
-                "Built and applied fresh new design to Taco Bell's website"
+                "Helped launch the web application for the Nike+ FuelBand fitness tracker",
+                "Built interface for and and applied fresh new design to Taco Bell's website",
+                "Promoted from Senior Presentation Code Developer"
             ]
         },
         {
@@ -53,10 +47,10 @@
             "website": "http://www.dhapdigital.com/",
             "startDate": "2007",
             "endDate": "2009",
-            "summary": "At DHAP, I developed sites for some of the biggest brands in software and cars, Adobe and Toyota (including Lexus and Scion).",
+            "summary": "At DHAP, I worked on websites for two of the biggest companies in software and cars, Adobe and Toyota.",
             "highlights": [
-                "Developed the first Adobe site (Marketplace) for software extensions and other add-ons",
-                "Maintained and enhanced Lexus.com and websites for related car brands Toyota and Scion"
+                "Helped develop the first Adobe web application (Marketplace) offering extensions and other add-ons for Air and Photoshop",
+                "Maintained and enhanced Lexus.com and other websites for related brands Toyota and Scion using the TeamSite CMS"
             ]
         },
         {
@@ -65,9 +59,12 @@
             "website": "",
             "startDate": "2005",
             "endDate": "2007",
-            "summary": "",
+            "summary": "I did front-end development work on large pharmaceutical websites and also managed complex email marketing efforts while at Modem.",
             "highlights": [
-                ""
+                "Worked on Java-based patient education websites for Amgen's top-selling rheumatoid arthritis drug Enbrel",
+                "Built and launched large email campaigns using the Responsys SaaS solution, then parsed and analyzed resulting data with SQL",
+                "Coded cross-client HTML emails for Fortune 500 clients such as Microsoft, Charles Schwab, and Sprint",
+                "Promoted from User Interface Developer"
             ]
         },
         {
@@ -78,7 +75,8 @@
             "endDate": "2004",
             "summary": "",
             "highlights": [
-                ""
+                "Created content for sites and administered online courses for the large UCSF medical community",
+                "Contributed to Ilios, an award-winning, homegrown student calendaring web application based on Classic ASP"
             ]
         },
         {
