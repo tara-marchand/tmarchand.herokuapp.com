@@ -1,3 +1,87 @@
+// model
+var BoardModel = function() {
+    this.maxMoves = null;
+    this.movesMade = 0;
+};
+
+BoardModel.prototype = {
+    setMaxMoves: function(newMaxMoves) {
+        this.maxMoves = newMaxMoves;
+    }
+};
+
+// view
+var BoardView = function(element, model) {
+    this.element = element;
+    this.model = model;
+
+    var COLUMN_DATA_ATTRIBUTE = "data-column";
+    var ROW_DATA_ATTRIBUTE = "data-row";
+
+    var rows = element.getElementsByTagName("tr");
+    var spacesPerSide = rows.length;
+
+    this.model.setMaxMoves(Math.pow(spacesPerSide, 2));
+    this.spaceClicked = new BoardEvent(this);
+
+    // add data attributes with row and column values to spaces
+    for (var i = spacesPerSide - 1, rowSpaces; i >= 0; i--) {
+        rowSpaces = rows[i].getElementsByTagName("td");
+        for (var j = rowSpaces.length - 1, space = {}; j >= 0; j--) {
+            space.row = i + "";
+            space.column = j + "";
+            rowSpaces[j].setAttribute(COLUMN_DATA_ATTRIBUTE, space.column);
+            rowSpaces[j].setAttribute(ROW_DATA_ATTRIBUTE, space.row);
+        }
+    }
+
+    // event delegation
+    this.element.addEventListener("click", function(e) {
+        var target = e.target || e.srcElement;
+        var nodeName = target.nodeName.toLowerCase();
+
+        if (nodeName === "td") {
+            var column = target.getAttribute(COLUMN_DATA_ATTRIBUTE);
+            var row = target.getAttribute(ROW_DATA_ATTRIBUTE);
+
+            this.spaceClicked.notify({ column: column, row: row });
+        }
+    }.bind(this));
+};
+
+// controller
+var BoardController = function(model, view) {
+    this.model = model;
+    this.view = view;
+};
+
+BoardController.prototype = {
+};
+
+// event
+var BoardEvent = function(sender) {
+    this.sender = sender;
+    this.listeners = [];
+};
+
+BoardEvent.prototype = {
+    attach: function (listener) {
+        this.listeners.push(listener);
+    },
+    notify: function (args) {
+        var listenersLength = this.listeners.length;
+        for (var i = 0; i < listenersLength; i++) {
+            this.listeners[i](this.sender, args);
+        }
+    }
+};
+
+var boardModel = new BoardModel();
+var boardView = new BoardView(document.getElementById("board"), boardModel);
+var boardController = new BoardController(boardModel, boardView);
+
+/* ---------------------------------------------------- */
+/*
 var Board = function() {
     var COLUMN_DATA_ATTRIBUTE = "data-column";
     var ROW_DATA_ATTRIBUTE = "data-row";
@@ -186,3 +270,4 @@ var Board = function() {
 };
 
 var board = new Board();
+*/
