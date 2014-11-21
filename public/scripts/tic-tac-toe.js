@@ -2,11 +2,16 @@
 var BoardModel = function() {
     this.maxMoves = null;
     this.movesMade = 0;
+    this.spaces = [];
 };
 
 BoardModel.prototype = {
     setMaxMoves: function(newMaxMoves) {
         this.maxMoves = newMaxMoves;
+    },
+
+    addSpace: function(column, row) {
+        this.spaces.push({ column: column, row: row, content: blank }); // conent: blank, user, computer
     }
 };
 
@@ -22,7 +27,6 @@ var BoardView = function(element, model) {
     var spacesPerSide = rows.length;
 
     this.model.setMaxMoves(Math.pow(spacesPerSide, 2));
-    this.spaceClicked = new BoardEvent(this);
 
     // add data attributes with row and column values to spaces
     for (var i = spacesPerSide - 1, rowSpaces; i >= 0; i--) {
@@ -32,6 +36,7 @@ var BoardView = function(element, model) {
             space.column = j + "";
             rowSpaces[j].setAttribute(COLUMN_DATA_ATTRIBUTE, space.column);
             rowSpaces[j].setAttribute(ROW_DATA_ATTRIBUTE, space.row);
+            this.model.addSpace(i, j);
         }
     }
 
@@ -43,8 +48,9 @@ var BoardView = function(element, model) {
         if (nodeName === "td") {
             var column = target.getAttribute(COLUMN_DATA_ATTRIBUTE);
             var row = target.getAttribute(ROW_DATA_ATTRIBUTE);
+            // update view
 
-            this.spaceClicked.notify({ column: column, row: row });
+            BoardEvents.publish("click:space", { column: column, row: row });
         }
     }.bind(this));
 };
@@ -53,28 +59,56 @@ var BoardView = function(element, model) {
 var BoardController = function(model, view) {
     this.model = model;
     this.view = view;
+
+    BoardEvents.subscribe("click:space", function(columnRow) {
+        this.setSpaceContent(columnRow.column, columnRow.row, "user");
+    }.bind(this));
 };
 
 BoardController.prototype = {
+    setSpaceContent: function() {
+        // update model
+    }
 };
 
 // event
-var BoardEvent = function(sender) {
-    this.sender = sender;
-    this.listeners = [];
-};
+var BoardEvents = (function() {
+    var topics = {};
 
-BoardEvent.prototype = {
-    attach: function (listener) {
-        this.listeners.push(listener);
-    },
-    notify: function (args) {
-        var listenersLength = this.listeners.length;
-        for (var i = 0; i < listenersLength; i++) {
-            this.listeners[i](this.sender, args);
+    return {
+        subscribe: function(topic, listener) {
+            // create the topic's object if not yet created
+            if (!topics[topic]) {
+                topics[topic] = {
+                    queue: []
+                };
+            }
+
+            // add listener to queue
+            var index = topics[topic].queue.push(listener) - 1;
+
+            // provide handle back for removal of topic
+            return {
+                remove: function() {
+                    delete topics[topic].queue[index];
+                }
+            };
+        },
+        publish: function(topic, info) {
+            var items = topics[topic].queue;
+
+            // if the topic doesn't exist, or there are no listeners in queue, just leave
+            if (!topics[topic] || !topics[topic].queue.length) {
+                return;
+            }
+
+            // cycle through topics queue, fire!
+            for (var i = items.length - 1; i >= 0; i--) {
+                items[i](info || {});
+            }
         }
-    }
-};
+    };
+})();
 
 var boardModel = new BoardModel();
 var boardView = new BoardView(document.getElementById("board"), boardModel);
