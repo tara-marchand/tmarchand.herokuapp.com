@@ -190,7 +190,6 @@ var Board = function() {
         }
     };
 
-<<<<<<< Updated upstream
     var getAvailableMoves = function(board) {
         var availableMoves = [];
 
@@ -207,14 +206,10 @@ var Board = function() {
     };
 
     var doComputerMove = function() {
-=======
-    var getComputerMove = function() {
->>>>>>> Stashed changes
         if (numberOfMoves === maxNumberOfMoves) {
             return;
         }
 
-<<<<<<< Updated upstream
         minimax(boardEl, 0);
 
         isWin = checkForWin(boardEl, targetColumn, targetRow, USER_TEXT_CONTENT);
@@ -255,45 +250,6 @@ var Board = function() {
         minScoreIndex = scores.indexOf(Math.min.apply(null, scores));
         moveToMake = moves[minScoreIndex];
         // return scores[min_score_index]
-=======
-        var tempMove = 10;
-        //sets to a default value at random
-        for(var i=0; i < spacesTaken.length; i++){
-            if(spacesTaken[i] === false){
-                bestMove = i + 1;
-            }
-        }
-        
-        //this step is skipped on medium or easy
-        if(difficulty > 2){
-            //this ensures a decent second move when the user is going first
-            if(spacesTaken[6] == false && spacesTaken[8] == false){
-                bestMove = 7;
-            }
-        }
-        
-        //if the middle square isn't taken, take it
-        if(spacesTaken[4] === false){
-            bestMove = 5;
-        }
-
-        //these steps are skipped on easy
-        if(difficulty > 1){
-            //see if the player can win the next move
-            tempMove = match.canWin('O', true);
-            if(tempMove != 10){
-                bestMove = tempMove + 1;            
-            }
-            
-            //see if the CPU can win the next move
-            tempMove = match.canWin('X', false);
-            if(tempMove != 10){
-                bestMove = tempMove + 1;            
-            }
-        }
-        // match.draw(bestMove, false);
-        // match.doMove(bestMove, false);
->>>>>>> Stashed changes
     };
 
     // add data attributes with row and column values to spaces
