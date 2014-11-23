@@ -150,17 +150,17 @@ var BoardController = function(model, view) {
 
 BoardController.prototype = {
     updateSpace: function(column, row, contentType) {
-        var isWin = false;
+        var win = false;
 
         // update view
         this.view.setSpaceContent(column, row, contentType);
         // update model
         this.model.setSpaceContent(column, row, contentType);
-        isWin = this.checkForWin(contentType);
-        if (isWin === true) {
+        win = this.checkForWin(contentType);
+        if (win.isWin === true) {
             console.log("is win for " + contentType);
         } else if (contentType === "user") {
-            // computer's turn
+            this.doComputerMove();
         } else if (contentType === "computer") {
             // user's turn
         }
@@ -250,6 +250,19 @@ BoardController.prototype = {
             isWin = checkByDiagonals();
         }
         return {isWin: isWin, contentType: contentType};
+    },
+    doComputerMove: function() {
+        var currentSpaces = this.model.getSpaces();
+        var availableMoves = (function() {
+            var moves = [];
+
+            for (var i = currentSpaces - 1; i >= 0; i--) {
+                if (currentSpaces[i].content === "blank") {
+                    moves.push(currentSpaces[i]);
+                }
+            }
+            return moves;
+        })();
     }
 };
 
