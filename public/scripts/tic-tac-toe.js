@@ -22,22 +22,33 @@ if (!Array.prototype.find) {
 }
 
 // model
-var BoardModel = function() {
+var BoardModel = function(spaces, options) {
+    if (!options) {
+        options = {};
+    }
+
     this.content = {
         blank: "",
         user: "X",
         computer: "O"
     };
 
-    this.spacesPerSide = 0;
-    this.maxMoves = null;
+    this.spaces = spaces || [];
+    this.spacesPerSide = options.spacesPerSide || 0;
+    this.maxMoves = options.maxMoves || null;
     this.movesMade = 0;
-    this.spaces = []; 
 };
 
 BoardModel.prototype = {
     getSpaces: function() {
         return this.spaces;
+    },
+
+    setSpaces: function(spaces) {
+        this.spaces = [];
+        for (var i = spaces.length - 1; i >= 0; i--) {
+            this.spaces.push(spaces[i]);
+        }
     },
 
     setSpacesPerSide: function(newSpacesPerSide) {
@@ -60,14 +71,31 @@ BoardModel.prototype = {
         this.spaces.push({ column: column, row: row, content: "blank" }); // conent: blank, user, computer
     },
 
-    setSpaceContent: function(column, row, contentType) {
+    setSpaceContent: function(column, row, turn) {
         for (var i = this.spaces.length - 1, space; i >= 0; i--) {
             space = this.spaces[i];
-            if (space.column + "" === column && space.row + "" === row && space.content === "blank") {
-                space.content = contentType;
+            // loose equality
+            if (space.column == column && space.row == row && space.content === "blank") {
+                space.content = turn;
                 break;
             }
         }
+    },
+
+    doMovesMadeEqualMaxMoves: function() {
+        return this.movesMade === this.maxMoves;
+    },
+
+    getAvailableSpaces: function() {
+        var spaces = this.getSpaces();
+        var availableSpaces = [];
+
+        for (var i = spaces.length - 1; i >= 0; i--) {
+            if (spaces[i].content === "blank") {
+                availableSpaces.push(spaces[i]);
+            }
+        }
+        return availableSpaces;
     }
 };
 
@@ -115,19 +143,20 @@ var BoardView = function(element, model) {
 };
 
 BoardView.prototype = {
-    setSpaceContent: function(column, row, contentType) {
+    setSpaceContent: function(column, row, turn) {
         for (var i = this.model.getSpacesPerSide() - 1, rowSpaces; i >= 0; i--) {
-            if (i + "" === row) {
+            if (i == row) {
                 rowSpaces = this.rows[i].getElementsByTagName("td");
                 for (var j = rowSpaces.length - 1, space, content; j >= 0; j--) {
-                    if (j + "" === column) {
+                    if (j == column) {
                         space = rowSpaces[j];
-                        content = this.model.content[contentType];
+                        content = this.model.content[turn];
                         contentAttribute = space.getAttribute(this.CONTENT_DATA_ATTRIBUTE);
                         // don't do anything if space isn't blank
                         if (contentAttribute === "blank") {
+                            // update view
                             space.textContent = content;
-                            space.setAttribute(this.CONTENT_DATA_ATTRIBUTE, contentType);
+                            space.setAttribute(this.CONTENT_DATA_ATTRIBUTE, turn);
                         }
                         break;
                     }
@@ -142,32 +171,38 @@ BoardView.prototype = {
 var BoardController = function(model, view) {
     this.model = model;
     this.view = view;
+    this.turn = "user"; // user, computer
 
     BoardEvents.subscribe("click:space", function(columnRow) {
-        this.updateSpace(columnRow.column, columnRow.row, "user");
+        this.updateSpace(columnRow.column, columnRow.row);
+        this.turn = "computer";
+        this.doComputerMove();
     }.bind(this));
 };
 
 BoardController.prototype = {
-    updateSpace: function(column, row, contentType) {
-        var win = false;
-
+    cloneSpaces: function(spaces) {
+        return JSON.parse(JSON.stringify(spaces));
+    },
+    updateSpace: function(column, row) {
         // update view
-        this.view.setSpaceContent(column, row, contentType);
+        this.view.setSpaceContent(column, row, this.turn);
         // update model
-        this.model.setSpaceContent(column, row, contentType);
-        win = this.checkForWin(contentType);
-        if (win.isWin === true) {
-            console.log("is win for " + contentType);
-        } else if (contentType === "user") {
-            this.doComputerMove();
-        } else if (contentType === "computer") {
-            // user's turn
+        this.model.setSpaceContent(column, row, this.turn);
+    },
+    getOppositeTurn: function(turn) {
+        if (turn === "user") {
+            return "computer";
+        } else if (turn === "computer") {
+            return "user";
         }
     },
-    checkForWin: function(contentType) {
-        var spaces = this.model.getSpaces();
-        var spacesPerSide = this.model.getSpacesPerSide();
+    isGameOver: function() {
+        return this.model.doMovesMadeEqualMaxMoves();
+    },
+    isWin: function(boardModel, turn) {
+        var spaces = boardModel.getSpaces();
+        var spacesPerSide = boardModel.getSpacesPerSide();
         var i;
         var j;
 
@@ -178,7 +213,7 @@ BoardController.prototype = {
         var eligibleSpacesMakeWin = function() {
             winningSpaces = 0;
             for (j = eligibleSpaces.length - 1; j >= 0; j--) {
-                if (eligibleSpaces[j].content === contentType) {
+                if (eligibleSpaces[j].content === this.turn) {
                     winningSpaces++;
                 }
             }
@@ -187,7 +222,7 @@ BoardController.prototype = {
             } else {
                 return false;
             }
-        };
+        }.bind(this);
 
         // columns
         var checkByColumn = function() {
@@ -249,20 +284,86 @@ BoardController.prototype = {
         if (isWin === false) {
             isWin = checkByDiagonals();
         }
-        return {isWin: isWin, contentType: contentType};
+        return isWin;
+    },
+    score: function(win) {
+        if (win === true) {
+            if (this.turn === "user") {
+                console.log("user won");
+                return 1;
+            } else if (this.turn === "computer") {
+                console.log("computer won");
+                return -1;
+            }
+        } else {
+            console.log("tie");
+            return 0;
+        }
     },
     doComputerMove: function() {
-        var currentSpaces = this.model.getSpaces();
-        var availableMoves = (function() {
-            var moves = [];
+        var win = this.isWin(this.model, this.turn);
 
-            for (var i = currentSpaces - 1; i >= 0; i--) {
-                if (currentSpaces[i].content === "blank") {
-                    moves.push(currentSpaces[i]);
+        if (win === true) {
+            this.score(win);
+        } else {
+            var spaces = this.model.getSpaces();
+            var availableMoves = this.model.getAvailableSpaces();
+            var boardModel;
+            var thisScore;
+            var bestScore = -1;
+            var bestSpace = null;
+
+            for (var j = availableMoves.length - 1; j >= 0; j--) {
+                boardModel = new BoardModel(this.cloneSpaces(spaces), {
+                    maxMoves: this.model.getMaxMoves(),
+                    spacesPerSide: this.model.getSpacesPerSide()
+                });
+                // new move
+                boardModel.setSpaceContent(availableMoves[j].column, availableMoves[j].row, "computer");
+                thisScore = this.minimax(boardModel, "computer");
+                if (thisScore <= bestScore) {
+                    bestScore = thisScore;
+                    bestSpace = { column: availableMoves[j].column, row: availableMoves[j].row };
                 }
             }
-            return moves;
-        })();
+            console.log(bestSpace);
+            this.updateSpace(bestSpace.column, bestSpace.row);
+            this.turn = "user";
+        }
+    },
+    minimax: function(boardModel, turn) {
+        var spaces = boardModel.getSpaces();
+        var availableMoves = boardModel.getAvailableSpaces();
+        var newBoardModel;
+        var thisScore;
+        var bestScore = 0;
+
+        if (turn === "computer") {
+            bestScore = -1;
+        } else if (turn === "user") {
+            bestScore = 1;
+        }
+
+        // game is over
+        if (availableMoves.length === 0) {
+            return this.score(this.isWin(boardModel, turn));
+        }
+
+        for (var j = availableMoves.length - 1; j >= 0; j--) {
+            newBoardModel = new BoardModel(this.cloneSpaces(spaces), {
+                maxMoves: this.model.getMaxMoves(),
+                spacesPerSide: this.model.getSpacesPerSide()
+            });
+            // new move
+            newBoardModel.setSpaceContent(availableMoves[j].column, availableMoves[j].row, turn);
+
+            thisScore = this.minimax(newBoardModel, this.getOppositeTurn(turn));
+            if ((turn === "computer" && thisScore <= bestScore) || (turn === "user" && thisScore >= bestScore)) {
+                bestScore = thisScore;
+                bestSpace = { column: availableMoves[j].column, row: availableMoves[j].row };
+            }
+        }
+        return bestScore;
     }
 };
 
@@ -308,195 +409,3 @@ var BoardEvents = (function() {
 var boardModel = new BoardModel();
 var boardView = new BoardView(document.getElementById("board"), boardModel);
 var boardController = new BoardController(boardModel, boardView);
-
-/* ---------------------------------------------------- */
-/*
-var Board = function() {
-    var COLUMN_DATA_ATTRIBUTE = "data-column";
-    var ROW_DATA_ATTRIBUTE = "data-row";
-    var USER_TEXT_CONTENT = "X";
-    var COMPUTER_TEXT_CONTENT = "O";
-
-    var boardEl = document.getElementById("board");
-    var rowEls = boardEl.getElementsByTagName("tr");
-    var spaceEls;
-
-    var numberOfSpacesPerSide = rowEls.length;
-    var numberOfMoves = 0;
-    var maxNumberOfMoves = numberOfSpacesPerSide * numberOfSpacesPerSide; // calculated on iteration of table cells
-
-    var selectSpace = function(el, board, content) {
-        el.textContent = content;
-    }.bind(this);
-
-    var getContentByColumnAndRow = function(board, column, row) {
-        return board.querySelector("[data-column=\"" + column + "\"][data-row=\"" + row + "\"]").textContent;
-    };
-
-    // http://stackoverflow.com/questions/1056316/algorithm-for-determining-tic-tac-toe-game-over/1056352#1056352
-    // determine whether there's a win, and if so, who won
-    var checkForWin = function(board, targetColumn, targetRow, content) {
-        var isWin = {
-            boolean: false,
-            content: content,
-            score: null
-        };
-
-        // check column
-        for (var i = 0; i < numberOfSpacesPerSide; i++) {
-            if (getContentByColumnAndRow(board, targetColumn, i) !== content) {
-                break;
-            }
-            if (i === numberOfSpacesPerSide - 1) {
-                isWin.boolean = true;
-            }
-        }
-        // check row
-        for (i = 0; i < numberOfSpacesPerSide; i++){
-            if (getContentByColumnAndRow(board, i, targetRow) !== content) {
-                break;
-            }
-            if (i === numberOfSpacesPerSide - 1) {
-                isWin.boolean = true;
-            }
-        }
-        // check diagonal
-        if (targetColumn === targetRow) {
-            for (i = 0; i < numberOfSpacesPerSide; i++) {
-                if (getContentByColumnAndRow(board, i, i) !== content) {
-                    break;
-                }
-                if (i === numberOfSpacesPerSide - 1) {
-                    isWin.boolean = true;
-                }
-            }
-        }
-        // check opposite diagonal
-        for (i = 0; i < numberOfSpacesPerSide; i++) { // 20, row: 11, row: 02
-            if (getContentByColumnAndRow(board, numberOfSpacesPerSide - 1 - i, i) !== content) {
-                break;
-            }
-            if (i === numberOfSpacesPerSide - 1) {
-                isWin.boolean = true;
-            }
-        }
-
-        if (isWin.boolean === true) {
-            if (content === USER_TEXT_CONTENT) {
-                isWin.score = 10;
-            } else if (content === COMPUTER_TEXT_CONTENT) {
-                isWin.score = -10;
-            }
-        }
-
-        return isWin;
-    };
-
-    var doUserMove = function(e, board) {
-        if (numberOfMoves === maxNumberOfMoves) {
-            return;
-        }
-
-        var target = e.target || e.srcElement;
-        var nodeName = target.nodeName.toLowerCase();
-
-        if (nodeName === "td" && !target.textContent) {
-            var targetColumn = target.getAttribute(COLUMN_DATA_ATTRIBUTE);
-            var targetRow = target.getAttribute(ROW_DATA_ATTRIBUTE);
-            var isWin = {};
-
-            selectSpace(target, board, USER_TEXT_CONTENT);
-            // user won
-            isWin = checkForWin(boardEl, targetColumn, targetRow, USER_TEXT_CONTENT);
-            if (isWin.boolean === true) {
-                var name = (isWin.score === 10) ? "user" : "computer";
-                alert("Win for " + name + "!");
-                return;
-            }
-            // user didn't win
-            numberOfMoves++;
-            doComputerMove();
-        }
-    };
-
-    var getAvailableMoves = function(board) {
-        var availableMoves = [];
-
-        for (var i = numberOfSpacesPerSide - 1, row: rowSpaceEls; i >= 0; i--) {
-            rowSpaceEls = rowEls[i].getElementsByTagName("td");
-            for (var j = rowSpaceEls.length - 1; j >= 0; j--) {
-                if (rowSpaceEls[j].textContent === "") {
-                    availableMoves.push({ column: rowSpaceEls[j].getAttribute(COLUMN_DATA_ATTRIBUTE), row: rowSpaceEls[j].getAttribute(ROW_DATA_ATTRIBUTE) });
-                }
-            }
-        }
-
-        return availableMoves;
-    };
-
-    var doComputerMove = function() {
-        if (numberOfMoves === maxNumberOfMoves) {
-            return;
-        }
-
-        minimax(boardEl, 0);
-
-        isWin = checkForWin(boardEl, targetColumn, targetRow, USER_TEXT_CONTENT);
-        if (isWin.boolean === true) {
-            var name = (isWin.score === 10) ? "user" : "computer";
-            alert("Win for " + name + "!");
-            return;
-        }
-        // computer didn't win
-        numberOfMoves++;
-    };
-
-    var minimax = function(board, depth) {
-        var availableMoves = getAvailableMoves(board);
-        var scores = []; // an array of scores
-        var moves = []; // an array of moves
-        var minScoreIndex;
-        var moveToMake = {};
-
-        // populate the scores array, recursing as needed
-        for (var i = availableMoves.length - 1, row: move, boardCopy, selector, target; i >= 0; i--) {
-            move = availableMoves[i];
-            boardCopy = board.cloneNode();
-            selector = "td[" + COLUMN_DATA_ATTRIBUTE + "=\"" + move.column + "\"][" + ROW_DATA_ATTRIBUTE + "=\"" + move.row + "\"]";
-            console.log(selector);
-            target = board.querySelector(selector);
-            selectSpace(target, boardCopy, COMPUTER_TEXT_CONTENT);
-        }
-
-        // game.get_available_moves.each do |move|
-        //     possible_game = game.get_new_state(move)
-        //     scores.push minimax(possible_game)
-        //     moves.push move
-        // end
-
-        // # Do the min or the max calculation
-        // # This is the min calculation
-        minScoreIndex = scores.indexOf(Math.min.apply(null, scores));
-        moveToMake = moves[minScoreIndex];
-        // return scores[min_score_index]
-    };
-
-    // add data attributes with row and column values to spaces
-    for (var i = numberOfSpacesPerSide - 1, row: rowSpaceEls; i >= 0; i--) {
-        rowSpaceEls = rowEls[i].getElementsByTagName("td");
-        for (var j = rowSpaceEls.length - 1, row: space = {}; j >= 0; j--) {
-            space.row = i + "";
-            space.column = j + "";
-            rowSpaceEls[j].setAttribute(COLUMN_DATA_ATTRIBUTE, space.column);
-            rowSpaceEls[j].setAttribute(ROW_DATA_ATTRIBUTE, space.row);
-        }
-    }
-
-    // event delegation
-    boardEl.addEventListener("click", function(e) {
-        doUserMove(e, boardEl);
-    });
-};
-
-var board = new Board();
-*/
