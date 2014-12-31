@@ -5,20 +5,19 @@
     <section id="todoapp">
         <header id="header">
             <h1>todos</h1>
-            /{{input
-                type="text"
-                id="new-todo"
-                placeholder="What needs to be done?"
-                value=newTitle
-                action="createTodo"}}
+            \{{input type="text" id="new-todo" placeholder="What needs to be done?" value=newTitle action="createTodo"}}
         </header>
 
         <section id="main">
             <ul id="todo-list">
-            \{{#each todo in model}}
-            <li \{{bind-attr class="todo.isCompleted:completed"}}>
-                <input type="checkbox" class="toggle">
-                <label>\{{todo.title}}</label><button class="destroy"></button>
+            \{{#each todo in model itemController="todo"}}
+            <li \{{bind-attr class="todo.isCompleted:completed todo.isEditing:editing"}}>
+                \{{#if todo.isEditing}}
+                    \{{edit-todo class="edit" value=todo.title focus-out="acceptChanges" insert-newline="acceptChanges"}}
+                \{{else}}
+                    \{{input type="checkbox" checked=todo.isCompleted class="toggle"}}
+                    <label \{{action "editTodo" on="doubleClick"}}>\{{todo.title}}</label><button class="destroy"></button>
+                \{{/if}}
             </li>
             \{{/each}}
             </ul>
@@ -28,7 +27,7 @@
 
         <footer id="efooter">
             <span id="todo-count">
-                <strong>2</strong> todos left
+                <strong>\{{remaining}}</strong> \{{inflection}} left
             </span>
             <ul id="filters">
                 <li>
@@ -56,6 +55,10 @@
 {{addScript "bower_components/handlebars/handlebars.min.js"}}
 {{addScript "bower_components/ember/ember.min.js"}}
 {{addScript "bower_components/ember-data/ember-data.min.js"}}
-{{addScript "scripts/ember-app.js"}}
-{{addScript "scripts/ember-router.js"}}
-{{addScript "scripts/ember-model-todo.js"}}
+{{addScript "scripts/ember/application.js"}}
+{{addScript "scripts/ember/router.js"}}
+{{addScript "scripts/ember/models/todo.js"}}
+{{addScript "scripts/ember/controllers/todos-controller.js"}}
+{{addScript "scripts/ember/controllers/todo-controller.js"}}
+{{addScript "scripts/ember/views/edit-todo-view.js"}}
+
