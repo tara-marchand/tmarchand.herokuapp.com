@@ -69,6 +69,7 @@ module.exports = function(app, passport) {
                         }
                         res.render(req.params.page, model, function(err, html) { // render handlebars
                             if (err) {
+                                console.log(err);
                                 res.render("404");
                             } else {
                                 res.end(html);
