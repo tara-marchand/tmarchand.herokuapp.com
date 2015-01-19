@@ -1,7 +1,18 @@
-module.exports = function(app, passport) {
+module.exports = function(app, passport, sendgrid) {
 
     var fs = require("fs");
     var markdown = require("markdown").markdown;
+
+    /* role-based authorization middleware */
+    var requireRole = function(role) {
+        return function(req, res, next) {
+            if("user" in req && req.user.role === role) {
+                next();
+            } else {
+                res.send(403);
+            }
+        };
+    };
 
     app.get("/", function(req, res){
         res.render("index");
@@ -55,7 +66,6 @@ module.exports = function(app, passport) {
                         } else {
                             var dataString = data.toString();
                             var markup = markdown.toHTML(dataString); // render markdown
-                            console.log(markup);
                             res.render("markdown", {
                                 data: markup
                             });
@@ -82,14 +92,3 @@ module.exports = function(app, passport) {
     });
 
 };
-
-/* role-based authorization middleware */
-function requireRole(role) {
-    return function(req, res, next) {
-        if("user" in req && req.user.role === role) {
-            next();
-        } else {
-            res.send(403);
-        }
-    };
-}
