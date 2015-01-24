@@ -1,5 +1,6 @@
-var port = Number(process.env.PORT || 5000);
-
+/**
+ * module dependencies
+ */
 var fs = require("fs");
 var path = require("path");
 var express = require("express");
@@ -7,37 +8,87 @@ var morgan = require("morgan");
 var expressSession = require("express-session");
 var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
-
-var exphbs = require("express3-handlebars");
+var errorHandler = require("errorhandler");
 var expressState = require("express-state");
+var exphbs = require("express3-handlebars");
 var mongoose = require("mongoose");
 var passport = require("passport");
-var TwitterStrategy = require("passport-twitter").Strategy;
 var newrelic = require("newrelic");
-var sendgrid = require("sendgrid")(
-    process.env.SENDGRID_USERNAME,
-    process.env.SENDGRID_PASSWORD
-);
 
+/**
+ * controllers (route handlers)
+ */
+var homeController = require("./controllers/home.js");
+var userController = require("./controllers/user.js");
+var adminController = require("./controllers/admin.js");
+var contactController = require("./controllers/contact.js");
+var contentController = require("./controllers/content.js");
+
+/**
+ * API keys and Passport configuration
+ */
+var secrets = require("./config/secrets");
+var passportConfig = require("./config/passport");
+
+/**
+ * create Express server
+ */
 var app = express();
-var Schema = mongoose.Schema;
 
-expressState.extend(app);
+/**
+ * connect to MongoDB
+ */
+mongoose.connect(secrets.mongoDb);
+mongoose.connection.on("error", function() {
+    console.error("MongoDB connection error");
+});
 
+/**
+ * Express configuration
+ */
+app.set("port", Number(process.env.PORT || 5000));
 app.locals.viewsdir = path.join(__dirname, "views");
 app.locals.modelsdir = path.join(__dirname, "models");
-
-/* expose config to client side */
-app.set("state namespace", "tmarchand");
-app.expose({
-    socrataAppToken: process.env.SOCRATA_APP_TOKEN
-}, "env");
-
 app.locals.scripts = [];
 app.locals.stylesheets = [];
+app.use(morgan("dev"));
+app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
+app.use(bodyParser.json()); // parse application/json
+app.use(cookieParser());
+app.use(expressSession({
+    resave: false,
+    saveUninitialized: true,
+    secret: secrets.sessionSecret
+}));
+expressState.extend(app);
+/* static files and Bower components */
+app.use(express.static(__dirname + "/public"));
+app.use("/bower_components",  express.static(__dirname + "/bower_components"));
+/* nav items */
+app.use(function(req, res, next) {
+    var navItems = [];
+    var stringsToExclude = ["index", "404", "markdown"];
+    var path = __dirname + "/views";
+    var files = fs.readdirSync(path);
 
-/* Handlebars instance */
-var hbs = exphbs.create({
+    var file;
+    var fileNoExt;
+    var filePath;
+    var fileStats;
+    for (var i in files) {
+        file = files[i];
+        fileNoExt = file.replace(".handlebars", "").replace(".markdown", "");
+        filePath = path + "/" + file;
+        fileStats = fs.statSync(filePath);
+        if (fileStats.isFile() && stringsToExclude.indexOf(fileNoExt) === -1 && fileNoExt[0] !== ".") {
+            navItems.push(fileNoExt);
+        }
+    }
+    app.set("navItems", navItems);
+    next();
+});
+/* Handlebars */
+app.set("hbs", exphbs.create({
     defaultLayout: "index",
     helpers: {
         // render script tags in layout
@@ -73,46 +124,15 @@ var hbs = exphbs.create({
             app.locals.stylesheets.push(stylesheet);
         }
     }
-});
-app.engine("handlebars", hbs.engine);
-app.set("view engine", "handlebars");
-
-app.use(express.static(__dirname + "/public"));
-app.use("/bower_components",  express.static(__dirname + "/bower_components"));
-
-function setNavItems(req, res, next) {
-    var navItems = [];
-    var stringsToExclude = ["index", "404", "markdown"];
-    var path = __dirname + "/views";
-    var files = fs.readdirSync(path);
-
-    var file;
-    var fileNoExt;
-    var filePath;
-    var fileStats;
-    for (var i in files) {
-        file = files[i];
-        fileNoExt = file.replace(".handlebars", "").replace(".markdown", "");
-        filePath = path + "/" + file;
-        fileStats = fs.statSync(filePath);
-        if (fileStats.isFile() && stringsToExclude.indexOf(fileNoExt) === -1 && fileNoExt[0] !== ".") {
-            navItems.push(fileNoExt);
-        }
-    }
-    app.set("navItems", navItems);
-    next();
-}
-app.use(setNavItems);
-
-app.use(morgan("dev"));
-app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
-app.use(bodyParser.json()); // parse application/json
-app.use(cookieParser());
-app.use(expressSession({
-    resave: false,
-    saveUninitialized: true,
-    secret: process.env.SESSION_SECRET
 }));
+app.engine("handlebars", app.get("hbs").engine);
+app.set("view engine", "handlebars");
+/* expose config to client side */
+app.set("state namespace", "tmarchand");
+app.expose({
+    socrataAppToken: secrets.socrataAppToken
+}, "env");
+/* Passport */
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
@@ -123,61 +143,31 @@ app.use(function(req, res, next) {
     next();
 });
 
-var UserSchema = new Schema({
-    provider: String,
-    uid: String,
-    name: String,
-    image: String,
-    created: {type: Date, default: Date.now}
-});
-
-mongoose.connect(process.env.MONGOLAB_URI);
-mongoose.model("User", UserSchema);
-var User = mongoose.model("User");
-
-passport.use(new TwitterStrategy({
-        consumerKey: process.env.TWITTER_CONSUMER_KEY,
-        consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-        callbackURL: process.env.ROOT + "/auth/twitter/callback"
-    },
-    function(token, tokenSecret, profile, done) {
-        User.findOne({
-            uid: profile.id
-        }, function(err, user) {
-            if (user) {
-                done(null, user);
-            } else {
-                var user = new User();
-                user.provider = "twitter";
-                user.uid = profile.id;
-                user.name = profile.displayName;
-                user.image = profile._json.profile_image_url;
-                user.save(function(err) {
-                    if (err) {
-                        throw err;
-                    }
-                    done(null, user);
-                });
-            }
-        });
-    })
+/**
+ * routes
+ */
+app.get("/", homeController.home);
+app.get("/logout", userController.logout);
+app.get("/admin", passportConfig.requireRole("admin"), adminController.adminHome);
+app.get("/auth/twitter", passport.authenticate("twitter"));
+app.get("/auth/twitter/callback", passport.authenticate("twitter", {
+        failureRedirect: "/auth"
+    }), function(req, res) {
+        res.redirect("/");
+    }
 );
+app.get("/contact", contactController.getContact);
+app.post("/contact/send", contactController.postContact);
+app.get("/:page", contentController.getContent);
 
-passport.serializeUser(function(user, done) {
-    done(null, user.uid);
+/**
+ * error handler
+ */
+app.use(errorHandler());
+
+/**
+ * start
+ */
+app.listen(app.get("port"), function() {
+    console.log("Express server listening on port %d in %s mode", app.get("port"), app.get("env"));
 });
-
-passport.deserializeUser(function(uid, done) {
-    User.findOne({
-        uid: uid
-    }, function(err, user) {
-        done(err, user);
-    });
-});
-
-/* routes */
-var routes = require("./routes.js")(app, passport, sendgrid);
-
-/* start */
-app.listen(port);
-console.log("server is running on port " + port);
