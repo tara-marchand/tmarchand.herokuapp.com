@@ -5,10 +5,12 @@ var secrets = require("./secrets");
 var User = require("../models/User");
 
 passport.serializeUser(function(user, done) {
+    console.log("serializeUser");
     done(null, user.uid);
 });
 
 passport.deserializeUser(function(uid, done) {
+    console.log("deserializeUser");
     User.findOne({
         uid: uid
     }, function(err, user) {
@@ -26,7 +28,8 @@ passport.use(new TwitterStrategy({
             uid: profile.id
         }, function(err, existingUser) {
             if (existingUser) {
-                done(null, existingUser);
+                user = existingUser;
+                done(err);
             } else {
                 var user = new User();
                 user.provider = "twitter";
@@ -44,10 +47,13 @@ passport.use(new TwitterStrategy({
 /* authorization required middleware */
 exports.requireRole = function(role) {
     return function(req, res, next) {
+        if ("user" in req) {
+            console.log(req.user.role, role);
+        }
         if("user" in req && req.user.role === role) {
             next();
         } else {
-            res.send(403);
+            res.sendStatus(403);
         }
     };
 };

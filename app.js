@@ -5,9 +5,11 @@ var fs = require("fs");
 var path = require("path");
 var express = require("express");
 var morgan = require("morgan");
-var expressSession = require("express-session");
-var bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
+var multer = require("multer");
+var session = require("express-session");
+var flash = require("connect-flash");
 var errorHandler = require("errorhandler");
 var expressState = require("express-state");
 var exphbs = require("express3-handlebars");
@@ -52,15 +54,21 @@ app.locals.modelsdir = path.join(__dirname, "models");
 app.locals.scripts = [];
 app.locals.stylesheets = [];
 app.use(morgan("dev"));
+expressState.extend(app);
+app.use(cookieParser(secrets.sessionSecret));
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
-app.use(cookieParser());
-app.use(expressSession({
+app.use(multer());
+app.use(session({
     resave: false,
-    saveUninitialized: true,
-    secret: secrets.sessionSecret
+    saveUninitialized: false,
+    secret: secrets.sessionSecret,
+    secure: false
 }));
-expressState.extend(app);
+/* Passport */
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 /* static files and Bower components */
 app.use(express.static(__dirname + "/public"));
 app.use("/bower_components",  express.static(__dirname + "/bower_components"));
@@ -132,9 +140,6 @@ app.set("state namespace", "tmarchand");
 app.expose({
     socrataAppToken: secrets.socrataAppToken
 }, "env");
-/* Passport */
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(function(req, res, next) {
     res.locals.user = null;
     if (req.user) {
@@ -147,14 +152,15 @@ app.use(function(req, res, next) {
  * routes
  */
 app.get("/", homeController.home);
+app.get("/login-failed", userController.loginFailed);
 app.get("/logout", userController.logout);
 app.get("/admin", passportConfig.requireRole("admin"), adminController.adminHome);
 app.get("/auth/twitter", passport.authenticate("twitter"));
 app.get("/auth/twitter/callback", passport.authenticate("twitter", {
-        failureRedirect: "/auth"
-    }), function(req, res) {
-        res.redirect("/");
-    }
+        failureFlash: true,
+        failureRedirect: "/login-failed",
+        successRedirect: "/"
+    })
 );
 app.get("/contact", contactController.getContact);
 app.post("/contact/send", contactController.postContact);
