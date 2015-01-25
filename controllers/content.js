@@ -26,6 +26,7 @@ exports.getContent = function(req, res) {
             if (!err2) {
                 model = JSON.parse(data2);
             }
+            console.log("req.flash()");
             console.log(req.flash());
             res.render(req.params.page, model, function(err, html) { // render handlebars
                 if (err) {

@@ -15,5 +15,7 @@ module.exports = {
         passReqToCallback: true
     },
 
-    socrataAppToken: process.env.SOCRATA_APP_TOKEN
+    socrataAppToken: process.env.SOCRATA_APP_TOKEN,
+
+    root: process.env.ROOT
 };

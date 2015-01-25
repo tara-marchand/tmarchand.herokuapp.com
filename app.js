@@ -55,7 +55,7 @@ app.locals.scripts = [];
 app.locals.stylesheets = [];
 app.use(morgan("dev"));
 expressState.extend(app);
-app.use(cookieParser(secrets.sessionSecret));
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
 app.use(multer());
@@ -169,7 +169,7 @@ app.get("/:page", contentController.getContent);
 /**
  * error handler
  */
-app.use(errorHandler());
+app.use(errorHandler({ dumpExceptions: true, showStack: true }));
 
 /**
  * start

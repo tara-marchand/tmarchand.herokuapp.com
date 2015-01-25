@@ -14,7 +14,8 @@ exports.logout = function(req, res){
  * show login failure screen
  */
 exports.loginFailed = function(req, res){
-    console.log(req.session.passport);
+    console.log("req.session");
+    console.log(req.session);
     req.params.page = "login-failed";
     contentController.getContent(req, res);
 };
