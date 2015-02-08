@@ -11,6 +11,7 @@ var multer = require("multer");
 var session = require("express-session");
 var flash = require("connect-flash");
 var errorHandler = require("errorhandler");
+var _ = require("lodash");
 var expressState = require("express-state");
 var exphbs = require("express3-handlebars");
 var mongoose = require("mongoose");
@@ -58,7 +59,7 @@ expressState.extend(app);
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
-app.use(multer());
+app.use(multer({ dest: "./admin/uploads/" }));
 app.use(session({
     resave: false,
     saveUninitialized: false,
@@ -104,10 +105,11 @@ app.set("hbs", exphbs.create({
             app.locals.scripts = [];
             if (scripts !== undefined) {
                 return scripts.map(function(script) {
-                    if (script.indexOf("//") > -1) {
-                        return "<script src=\"" + script + "\"></script>";
+                    console.dir(script);
+                    if (script.type === "") {
+                        return "<script src=\"" + script.name + "\"></script>";
                     } else {
-                        return "<script src=\"" + script + "\"></script>";
+                        return "<script type=\"" + script.type + "\" src=\"" + script.name + "\"></script>";
                     }
                 }).join("\n ");
             } else {
@@ -115,8 +117,14 @@ app.set("hbs", exphbs.create({
             }
         },
         // add script from view
-        addScript: function(script) {
-            app.locals.scripts.push(script);
+        addScript: function(name, options) {
+            if (!options.hash.type) {
+                options.hash.type = "";
+            }
+            app.locals.scripts.push({
+                name: name,
+                type: options.hash.type
+            });
         },
         // render stylesheet tags in layout
         stylesheetTags: function(stylesheets) {
@@ -154,7 +162,9 @@ app.use(function(req, res, next) {
 app.get("/", homeController.home);
 app.get("/login-failed", userController.loginFailed);
 app.get("/logout", userController.logout);
-app.get("/admin", passportConfig.requireRole("admin"), adminController.adminHome);
+app.get("/admin", passportConfig.isAuthenticated, adminController.adminHome);
+app.get("/admin/upload", passportConfig.isAuthenticated, adminController.getAdminUpload);
+app.post("/admin/upload", passportConfig.isAuthenticated, adminController.postAdminUpload);
 app.get("/auth/twitter", passport.authenticate("twitter"));
 app.get("/auth/twitter/callback", passport.authenticate("twitter", {
         failureFlash: true,

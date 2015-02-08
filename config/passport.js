@@ -5,12 +5,10 @@ var secrets = require("./secrets");
 var User = require("../models/User");
 
 passport.serializeUser(function(user, done) {
-    console.log("serializeUser");
     done(null, user.uid);
 });
 
 passport.deserializeUser(function(uid, done) {
-    console.log("deserializeUser");
     User.findOne({
         uid: uid
     }, function(err, user) {
@@ -37,6 +35,7 @@ passport.use(new TwitterStrategy({
                         user.uid = profile.id;
                         user.name = profile.displayName;
                         user.image = profile._json.profile_image_url;
+                        user.tokens.push({ kind: 'twitter', accessToken: token, tokenSecret: tokenSecret });
                         user.save(function(err) {
                             req.flash("info", { msg: "Twitter account has been linked." });
                             done(err, user);
@@ -56,6 +55,7 @@ passport.use(new TwitterStrategy({
                     user.uid = profile.id;
                     user.name = profile.displayName;
                     user.image = profile._json.profile_image_url;
+                    user.tokens.push({ kind: 'twitter', accessToken: token, tokenSecret: tokenSecret });
                     user.save(function(err) {
                         done(err, user);
                     });
@@ -65,16 +65,21 @@ passport.use(new TwitterStrategy({
     })
 );
 
+/* login required middleware. */
+exports.isAuthenticated = function(req, res, next) {
+    if (req.isAuthenticated() === true) {
+        return next();
+    }
+    console.log("not authenticated");
+    res.redirect("/");
+};
+
 /* authorization required middleware */
-exports.requireRole = function(role) {
-    return function(req, res, next) {
-        if ("user" in req) {
-            console.log(req.user.role, role);
-        }
-        if("user" in req && req.user.role === role) {
-            next();
-        } else {
-            res.sendStatus(403);
-        }
-    };
+exports.isAuthorized = function(req, res, next) {
+    if (_.find(req.user.tokens, { kind: "twitter" })) {
+        next();
+    } else {
+        console.log("not authorized");
+        res.redirect("/");
+    }
 };
