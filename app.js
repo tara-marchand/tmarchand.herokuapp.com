@@ -146,7 +146,8 @@ app.set("view engine", "handlebars");
 /* expose config to client side */
 app.set("state namespace", "tmarchand");
 app.expose({
-    socrataAppToken: secrets.socrataAppToken
+    socrataAppToken: secrets.socrataAppToken,
+    instagramClientId: secrets.instagram.clientId
 }, "env");
 app.use(function(req, res, next) {
     res.locals.user = null;

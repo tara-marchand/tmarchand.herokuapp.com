@@ -17,5 +17,9 @@ module.exports = {
 
     socrataAppToken: process.env.SOCRATA_APP_TOKEN,
 
-    root: process.env.ROOT
+    root: process.env.ROOT,
+
+    instagram: {
+        clientId: process.env.INSTAGRAM_CLIENT_ID
+    }
 };
