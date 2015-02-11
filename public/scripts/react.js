@@ -3,7 +3,7 @@
 var InstagramImage = React.createClass({
     render: function() {
         return (
-            <li><img src={this.props.image.low_resolution} /></li>
+            <li><img src={this.props.image} /></li>
         );
     }
 });
@@ -15,12 +15,13 @@ var InstagramImageList = React.createClass({
         };
     },
     componentDidMount: function() {
-        var url = "https://api.instagram.com/v1/users/3007/media/recent/?client_id=" + tmarchand.env.instagramClientId;
+        var url = "/api/instagram";
         $.ajax({
             url: url,
             dataType: "json",
             success: function(data) {
-                this.setState({images: data.data.images});
+                console.log(data);
+                this.setState({images: data.data});
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
@@ -30,7 +31,7 @@ var InstagramImageList = React.createClass({
     render: function() {
         var images = this.state.images.map(function(image) {
             return (
-                <InstagramImage image={image} />
+                <InstagramImage image={image.images.low_resolution.url} />
             );
         });
         return (

@@ -13,6 +13,7 @@ var flash = require("connect-flash");
 var errorHandler = require("errorhandler");
 var _ = require("lodash");
 var expressState = require("express-state");
+var request = require("request");
 var exphbs = require("express3-handlebars");
 var mongoose = require("mongoose");
 var passport = require("passport");
@@ -146,8 +147,7 @@ app.set("view engine", "handlebars");
 /* expose config to client side */
 app.set("state namespace", "tmarchand");
 app.expose({
-    socrataAppToken: secrets.socrataAppToken,
-    instagramClientId: secrets.instagram.clientId
+    socrataAppToken: secrets.socrataAppToken
 }, "env");
 app.use(function(req, res, next) {
     res.locals.user = null;
@@ -175,6 +175,18 @@ app.get("/auth/twitter/callback", passport.authenticate("twitter", {
 );
 app.get("/contact", contactController.getContact);
 app.post("/contact/send", contactController.postContact);
+app.get("/api/instagram", function(req, res) {
+    req.pipe(request({
+        url: "https://api.instagram.com/v1/users/3007/media/recent/?client_id=" + secrets.instagram.clientId + "&count=12",
+        method: req.method
+    }, function(error, response, body) {
+        if (error.code === "ECONNREFUSED") {
+            console.error("Refused connection");
+        } else {
+            throw error;
+        }
+    })).pipe(res);
+});
 app.get("/:page", contentController.getContent);
 
 /**
