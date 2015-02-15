@@ -35,6 +35,11 @@ var secrets = require("./config/secrets");
 var passportConfig = require("./config/passport");
 
 /**
+ * helpers
+ */
+var nav = require("./helpers/nav.js");
+
+/**
  * create Express server
  */
 var app = express();
@@ -75,28 +80,7 @@ app.use(flash());
 app.use(express.static(__dirname + "/public"));
 app.use("/bower_components",  express.static(__dirname + "/bower_components"));
 /* nav items */
-app.use(function(req, res, next) {
-    var navItems = [];
-    var stringsToExclude = ["index", "404", "markdown"];
-    var path = __dirname + "/views";
-    var files = fs.readdirSync(path);
-
-    var file;
-    var fileNoExt;
-    var filePath;
-    var fileStats;
-    for (var i in files) {
-        file = files[i];
-        fileNoExt = file.replace(".handlebars", "").replace(".markdown", "");
-        filePath = path + "/" + file;
-        fileStats = fs.statSync(filePath);
-        if (fileStats.isFile() && stringsToExclude.indexOf(fileNoExt) === -1 && fileNoExt[0] !== ".") {
-            navItems.push(fileNoExt);
-        }
-    }
-    app.set("navItems", navItems);
-    next();
-});
+app.set("navItems", nav.getItems());
 /* Handlebars */
 app.set("hbs", exphbs.create({
     defaultLayout: "index",

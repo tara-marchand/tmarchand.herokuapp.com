@@ -38,14 +38,11 @@
         </div>
         {{/if}}
         {{#if profiles.length}}
-        <h3>Profiles</h3>
         <section id="profiles">
             {{#each profiles}}
             <span class="item">
                 {{#if network}}
-                <strong class="network">
-                    {{#if url}}<a href="{{url}}">{{/if}}{{network}}{{#if url}}</a>{{/if}}
-                </strong>
+                {{#if url}}{{#if @first}}{{else}}&middot;{{/if}} <a href="{{url}}" class="network">{{/if}}{{network}}{{#if url}}</a>{{/if}}
                 {{/if}}
             </span>
             {{/each}}
