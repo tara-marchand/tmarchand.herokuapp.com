@@ -1,14 +1,16 @@
-/** @jsx React.DOM */
+var React = require("react");
 
-var InstagramImage = React.createClass({
+module.exports = exports = {};
+
+exports.InstagramImage = React.createClass({displayName: "InstagramImage",
     render: function() {
         return (
-            <li><img src={this.props.image} /></li>
+            React.createElement("li", null, React.createElement("img", {src: this.props.image}))
         );
     }
 });
 
-var InstagramImageList = React.createClass({
+exports.InstagramImageList = React.createClass({displayName: "InstagramImageList",
     getInitialState: function() {
         return {
             images: []
@@ -31,18 +33,18 @@ var InstagramImageList = React.createClass({
     render: function() {
         var images = this.state.images.map(function(image) {
             return (
-                <InstagramImage image={image.images.low_resolution.url} />
+                React.createElement(InstagramImage, {image: image.images.low_resolution.url})
             );
         });
         return (
-            <ul>
-            {images}
-            </ul>
+            React.createElement("ul", null, 
+            images
+            )
         );
     }
 });
 
-React.renderComponent(
-    <InstagramImageList />,
-    document.getElementsByClassName('react')[0]
-);
+// React.renderComponent(
+//     <InstagramImageList />,
+//     document.getElementsByClassName('react')[0]
+// );

@@ -1,0 +1,2 @@
+gulp: gulp watch
+web: supervisor app.js

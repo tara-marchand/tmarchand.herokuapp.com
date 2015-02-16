@@ -1,10 +1,29 @@
 {
+    "bitwise":   true,
     "camelcase": true,
-    "curly": true,
-    "eqeqeq": true,
-    "indent": 4,
-    "latedef": true,
-    "quotmark": "double",
-    "trailing": true,
-    "node": true
+    "curly":     true,
+    "eqeqeq":    true,
+    "forin":     true,
+    "immed":     true,
+    "indent":    4,
+    "latedef":   true,
+    "maxparams": 3,
+    "newcap":    true,
+    "noarg":     true,
+    "noempty":   true,
+    "nonew":     true,
+    "quotmark":  "single",
+    "strict":    true,
+    "undef":     true,
+    "unused":    true,
+    "trailing":  true,
+ 
+    "browser":   true,
+    "jquery":    true,
+ 
+    "globals": {
+        "console": false,
+        "Error": false,
+        "require": false
+    }
 }
