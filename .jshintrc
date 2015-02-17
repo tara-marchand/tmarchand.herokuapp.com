@@ -24,6 +24,8 @@
     "globals": {
         "console": false,
         "Error": false,
-        "require": false
+        "exports": true,
+        "module": true,
+        "require": true
     }
 }

@@ -1,3 +1,5 @@
+module.exports = exports = {};
+
 var fs = require('fs');
 var markdown = require('markdown').markdown;
 
@@ -6,6 +8,8 @@ var markdown = require('markdown').markdown;
  * render Markdown or Handlebars content
  */
 exports.getMarkdownContent = function(req, res) {
+    'use strict';
+
     fs.readFile(req.app.locals.viewsdir + '/' + req.params.page + '.markdown', function(err, data) {
         if (err) {
             res.render('404');
@@ -20,6 +24,8 @@ exports.getMarkdownContent = function(req, res) {
 };
 
 exports.getHandlebarsContent = function(req, res) {
+    'use strict';
+
     fs.readFile(req.app.locals.modelsdir + '/' + req.params.page + '.json', 'utf8', function(err2, data2) {
         var model = {};
         if (!err2) {
@@ -37,6 +43,8 @@ exports.getHandlebarsContent = function(req, res) {
 };
 
 exports.getContent = function(req, res) {
+    'use strict';
+
     if (req.params.page !== 'favicon.ico') {
         fs.readdir(req.app.locals.viewsdir, function(err, files) {
             if (files.indexOf(req.params.page + '.markdown') > -1) {

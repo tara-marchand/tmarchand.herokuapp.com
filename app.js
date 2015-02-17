@@ -175,14 +175,16 @@ app.get('/api/instagram', function(req, res) {
     })).pipe(res);
 });
 
-var instagram = require('./public/scripts/instagram-server');
 app.get('/instagram', function(req, res) {
-    var hbs = app.get('hbs');
+    'use strict';
+
+    var instagram = require('./public/scripts/react-components-server');
+    // var hbs = app.get('hbs');
     var instagramList = React.createFactory(instagram.InstagramImageList);
     var renderedList = React.renderToString(instagramList());
-    console.log(renderedList);
+
     res.render('instagram', {
-        body: renderedList
+        imageList: renderedList
     }, function(err, html) {
         if (err) {
             console.log(err);
