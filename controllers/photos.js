@@ -16,13 +16,15 @@ exports.photosHome = function(req, res) {
                 console.error('Refused connection');
             }
 
+            var images = res2.body.data;
             var instagram = require('../public/scripts/photos-react-server');
             var instagramImageList = React.createFactory(instagram.InstagramImageList);
             var renderedList = React.renderToString(instagramImageList(
-                { images : res2.body.data}
+                { images: images}
             ));
 
             res.render('photos', {
+                jsonifiedImages: JSON.stringify(images),
                 imageList: renderedList
             }, function(err, html) { // render handlebars
                 if (err) {
@@ -33,5 +35,14 @@ exports.photosHome = function(req, res) {
                 }
             });
 
+            // make browser aware of rendered React components
+            if (typeof window !== 'undefined') {
+                var container = document.getElementsByClassName('react')[0];
+                images = JSON.parse(images);
+                React.renderComponent(instagramImageList({
+                    images: images
+                }), container);
+            }
         });
 };
+
