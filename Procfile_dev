@@ -1,2 +1,2 @@
 gulp: gulp watch
-web: supervisor app.js
+web: supervisor -- --debug app.js

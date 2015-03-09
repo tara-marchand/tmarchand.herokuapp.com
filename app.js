@@ -2,9 +2,11 @@
  * module dependencies
  */
 var fs = require('fs');
+var http = require('http');
 var path = require('path');
 var express = require('express');
 var morgan = require('morgan');
+var logger = morgan('dev');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer');
@@ -12,7 +14,6 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var errorHandler = require('errorhandler');
 var expressState = require('express-state');
-var request = require('request');
 var exphbs = require('express3-handlebars');
 
 var React = require('react');
@@ -29,6 +30,7 @@ var homeController = require('./controllers/home.js');
 var userController = require('./controllers/user.js');
 var adminController = require('./controllers/admin.js');
 var contactController = require('./controllers/contact.js');
+var photosController = require('./controllers/photos.js');
 var contentController = require('./controllers/content.js');
 
 /**
@@ -63,7 +65,6 @@ app.locals.viewsdir = path.join(__dirname, 'views');
 app.locals.modelsdir = path.join(__dirname, 'models');
 app.locals.scripts = [];
 app.locals.stylesheets = [];
-app.use(morgan('dev'));
 expressState.extend(app);
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
@@ -163,38 +164,11 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter', {
 app.get('/contact', contactController.getContact);
 app.post('/contact/send', contactController.postContact);
 app.get('/api/instagram', function(req, res) {
-    req.pipe(request({
-        url: 'https://api.instagram.com/v1/users/3007/media/recent/?client_id=' + secrets.instagram.clientId + '&count=12',
-        method: req.method
-    }, function(error, response, body) {
-        if (error.code === 'ECONNREFUSED') {
-            console.error('Refused connection');
-        } else {
-            throw error;
-        }
-    })).pipe(res);
-});
-
-app.get('/instagram', function(req, res) {
     'use strict';
 
-    var instagram = require('./public/scripts/react-components-server');
-    // var hbs = app.get('hbs');
-    var instagramList = React.createFactory(instagram.InstagramImageList);
-    var renderedList = React.renderToString(instagramList());
-
-    res.render('instagram', {
-        imageList: renderedList
-    }, function(err, html) {
-        if (err) {
-            console.log(err);
-            res.render('404');
-        } else {
-            res.end(html);
-        }
-    });
+    req.pipe(instagramRequest).pipe(res);
 });
-
+app.get('/photos', photosController.photosHome);
 app.get('/:page', contentController.getContent);
 
 /**

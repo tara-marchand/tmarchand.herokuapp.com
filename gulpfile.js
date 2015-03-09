@@ -6,48 +6,52 @@ var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 
-gulp.task('react-browser', function() {
+gulp.task('photos-browserify-bundle', function() {
     'use strict';
 
     var browserifyBundle = browserify();
+    browserifyBundle.require('superagent');
     browserifyBundle.require('react');
+    browserifyBundle.require('react-async');
     browserifyBundle.bundle()
-        .pipe(source('react-browser.js'))
+        .pipe(source('photos-browserify-bundle.js'))
         .pipe(gulp.dest('./public/scripts'));
 });
 
-gulp.task('react-components-server', function() {
+gulp.task('photos-react-server', function() {
     'use strict';
 
-    return gulp.src('./views/jsx/**/*.jsx')
+    return gulp.src('./views/jsx/photos.jsx')
         .pipe(react())
-        .pipe(rename('react-components-server.js'))
+        .pipe(rename('photos-react-server.js'))
         .pipe(gulp.dest('./public/scripts'));
 });
 
-gulp.task('react-components-browser', function() {
+gulp.task('photos-react-browser', function() {
     'use strict';
 
-    var reactFiles = glob.sync('./views/jsx/**/*.jsx');
+    var reactFiles = glob.sync('./views/jsx/photos.jsx');
     var bundler = browserify({
-        entries: reactFiles,
-        transform: ['reactify'],
-        extensions: ['.jsx'],
-        exclude: 'react'
-    }).external('react');
+            entries: reactFiles,
+            transform: ['reactify'],
+            extensions: ['.jsx']
+        })
+        .exclude('superagent')
+        .exclude('react')
+        .exclude('react-async');
     var watcher = watchify(bundler);
     return watcher.on('update', function() {
         watcher.bundle()
-        .pipe(source('react-components-browser.js'))
+        .pipe(source('photos-react-browser.js'))
         .pipe(gulp.dest('./public/scripts'));
     })
     .bundle()
-    .pipe(source('react-components-browser.js'))
+    .pipe(source('photos-react-browser.js'))
     .pipe(gulp.dest('./public/scripts'));
 });
 
-gulp.task('watch', ['react-components-server', 'react-browser', 'react-components-browser'], function() {
+gulp.task('watch', ['photos-react-server', 'photos-browserify-bundle', 'photos-react-browser'], function() {
     'use strict';
 
-    gulp.watch('views/jsx/**/*.jsx', ['react-components-server']);
+    gulp.watch('views/jsx/**/*.jsx', ['photos-react-server', 'photos-react-browser']);
 });
