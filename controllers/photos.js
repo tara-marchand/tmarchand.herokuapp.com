@@ -19,9 +19,10 @@ exports.photosHome = function(req, res) {
             var images = res2.body.data;
             var instagram = require('../public/scripts/photos-react-server');
             var instagramImageList = React.createFactory(instagram.InstagramImageList);
-            var renderedList = React.renderToString(instagramImageList(
-                { images: images}
-            ));
+            var renderedList = React.renderToString(instagramImageList({ 
+                images: images,
+                initialCount: 0
+            }));
 
             res.render('photos', {
                 jsonifiedImages: JSON.stringify(images),
@@ -34,15 +35,6 @@ exports.photosHome = function(req, res) {
                     res.end(html);
                 }
             });
-
-            // make browser aware of rendered React components
-            if (typeof window !== 'undefined') {
-                var container = document.getElementsByClassName('react')[0];
-                images = JSON.parse(images);
-                React.renderComponent(instagramImageList({
-                    images: images
-                }), container);
-            }
         });
 };
 

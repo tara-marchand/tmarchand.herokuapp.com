@@ -17,7 +17,6 @@ exports.InstagramImageList = React.createClass({
         var images = [];
         if (this.props.images !== undefined) {
             images = this.props.images.map(function(image) {
-                console.log(image);
                 return (
                     <InstagramImage image={image.images.low_resolution.url} />
                 );
@@ -30,3 +29,12 @@ exports.InstagramImageList = React.createClass({
         );
     }
 });
+
+// make browser aware of rendered React components
+if (typeof window !== 'undefined') {
+    var container = document.getElementsByClassName('react')[0];
+    var images = JSON.parse(document.getElementById('images').innerHTML);
+    React.renderComponent(exports.InstagramImageList({
+        images: images
+    }), container);
+}
