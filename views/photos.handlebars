@@ -1,3 +1,4 @@
+{{addStylesheet "https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/css/fluidbox.css"}}
 {{addStylesheet "stylesheets/react.css"}}
 <div class="react">
     {{{imageList}}}
@@ -5,5 +6,7 @@
 <script id="images" type="application/json">
     {{{ jsonifiedImages }}}
 </script>
+{{addScript "bower_components/jquery/dist/jquery.min.js"}}
 {{addScript "scripts/photos-browserify-bundle.js"}}
 {{addScript "scripts/photos-react-browser.js"}}
+{{addScript "https://cdnjs.cloudflare.com/ajax/libs/fluidbox/1.4.3.1/jquery.fluidbox.min.js"}}

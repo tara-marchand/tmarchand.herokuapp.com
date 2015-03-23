@@ -8,7 +8,7 @@ module.exports = exports = {};
 var InstagramImage = React.createClass({displayName: "InstagramImage",
     render: function() {
         return (
-            React.createElement("li", null, React.createElement("img", {src: this.props.image}))
+            React.createElement("li", null, React.createElement("a", {href: this.props.image, title: ""}, React.createElement("img", {src: this.props.image, alt: "", title: ""})))
         );
     }
 });
@@ -39,6 +39,10 @@ if (typeof window !== 'undefined') {
     React.render(instagramImageList({
         images: images
     }), container);
+
+    $(function () {
+        $('a').fluidbox();
+    });
 }
 
 

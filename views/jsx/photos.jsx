@@ -7,7 +7,7 @@ module.exports = exports = {};
 var InstagramImage = React.createClass({
     render: function() {
         return (
-            <li><img src={this.props.image} /></li>
+            <li><a href={this.props.image} title=""><img src={this.props.image} alt="" title="" /></a></li>
         );
     }
 });
@@ -38,4 +38,8 @@ if (typeof window !== 'undefined') {
     React.render(instagramImageList({
         images: images
     }), container);
+
+    $(function () {
+        $('a').fluidbox();
+    });
 }
