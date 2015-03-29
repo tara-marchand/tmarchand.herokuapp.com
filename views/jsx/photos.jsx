@@ -7,7 +7,7 @@ module.exports = exports = {};
 var InstagramImage = React.createClass({
     render: function() {
         return (
-            <li><a href={this.props.image} title=""><img src={this.props.image} alt="" title="" /></a></li>
+            <li><a href={this.props.imageStd} title=""><img src={this.props.imageLow} alt="" title="" /></a></li>
         );
     }
 });
@@ -18,7 +18,7 @@ exports.InstagramImageList = React.createClass({
         if (this.props.images !== undefined) {
             images = this.props.images.map(function(image) {
                 return (
-                    <InstagramImage key={image.id} image={image.images.low_resolution.url} />
+                    <InstagramImage key={image.id} imageLow={image.images.low_resolution.url} imageStd={image.images.standard_resolution.url} />
                 );
             });
         }
