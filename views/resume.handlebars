@@ -154,31 +154,14 @@
     {{#if education.length}}
     <section id="education">
         <h2>Education</h2>
+        <ul class="education">
         {{#each education}}
-        <div class="item">
+        <li class="item">
             {{#if institution}}
-            <div class="institution">
-                {{institution}}
-            </div>
+            {{institution}}
+            <br>{{#if studyType}}{{studyType}}, {{/if}}{{#if area}}{{area}}{{/if}}
             {{/if}}
-            {{#if area}}
-            <div class="area">
-                {{#if studyType}}{{studyType}}, {{/if}}{{area}}
-            </div>
-            {{/if}}
-            {{#if gpa}}
-            <div class="gpa">
-                GPA: {{gpa}}
-            </div>
-            {{/if}}
-            {{#if courses.length}}
-            <ul class="courses">
-                {{#each courses}}
-                <li>{{.}}</li>
-                {{/each}}
-            </ul>
-            {{/if}}
-        </div>
+        </li>
         {{/each}}
     </section>
     {{/if}}

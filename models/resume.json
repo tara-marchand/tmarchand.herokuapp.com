@@ -28,17 +28,16 @@
     "work": [
         {
             "company": "R/GA",
-            "position": "Front End Solutions Architect",
+            "position": "Technology Lead",
             "website": "http://www.rga.com/",
             "startDate": "2009",
             "endDate": "present",
-            "summary": "I'm a technology lead and front-end architect/developer at R/GA San Francisco, working with such top-tier clients such as Nike, Microsoft, and HP.",
+            "summary": "",
             "highlights": [
-                "Lead a team of UI engineers for Nike's global events platform",
-                "Developed the first website for Microsoft's Surface tablet",
-                "Helped launch the web application for the Nike+ FuelBand fitness tracker",
-                "Built interface for and and applied fresh new design to Taco Bell's website",
-                "Promoted from Senior Presentation Code Developer"
+                "Lead user interface (UI) engineering and manage 2 developers working on web applications for Nike's new global events platform.",
+                "Architected and led front-end development on the website for Microsoft's just-launched Surface tablet.",
+                "Coded parts of the data-driven UI for the then-new Nike+ FuelBand fitness tracker's web application.",
+                "Promoted twice, from Senior Presentation Code Developer and Front End Solutions Architect."
             ]
         },
         {
@@ -47,10 +46,10 @@
             "website": "http://www.dhapdigital.com/",
             "startDate": "2007",
             "endDate": "2009",
-            "summary": "At DHAP, I worked on websites for two of the biggest companies in software and cars, Adobe and Toyota.",
+            "summary": "",
             "highlights": [
-                "Helped develop the first Adobe web application (Marketplace) offering extensions and other add-ons for Air and Photoshop",
-                "Maintained and enhanced Lexus.com and other websites for related brands Toyota and Scion using the TeamSite CMS"
+                "Developed client-side code for the first Adobe web application (Marketplace) to offer extensions and other add-ons for the company's Air and Photoshop applications.",
+                "Contributed as a UI engineer to Lexus.com and other websites for related brands Toyota and Scion."
             ]
         },
         {
@@ -59,12 +58,11 @@
             "website": "",
             "startDate": "2005",
             "endDate": "2007",
-            "summary": "I did front-end development work on large pharmaceutical websites and also managed complex email marketing efforts while at Modem.",
+            "summary": "",
             "highlights": [
-                "Worked on Java-based patient education websites for Amgen's top-selling rheumatoid arthritis drug Enbrel",
-                "Built and launched large email campaigns using the Responsys SaaS solution, then parsed and analyzed resulting data with SQL",
-                "Coded cross-client HTML emails for Fortune 500 clients such as Microsoft, Charles Schwab, and Sprint",
-                "Promoted from User Interface Developer"
+                "Created the UIs for patient education websites for Amgen's top-selling rheumatoid arthritis drug Enbrel.",
+                "Built emails and launched large campaigns for Amgen and Sprint; analyzed resulting data.",
+                "Promoted from User Interface Developer."
             ]
         },
         {
@@ -75,8 +73,8 @@
             "endDate": "2004",
             "summary": "",
             "highlights": [
-                "Created content for sites and administered online courses for the large UCSF medical community",
-                "Contributed to Ilios, an award-winning, homegrown student calendaring web application based on Classic ASP"
+                "Created content for sites and administered calendars and online courses for the UCSF medical community.",
+                "Provided hands-on technology support for medical school classroom instructors' hardware and software needs."
             ]
         },
         {
@@ -87,7 +85,9 @@
             "endDate": "2003",
             "summary": "",
             "highlights": [
-                ""
+                "Developed user interface for online courses about a wide variety of subjects offered by UC Berkeley's Extension program.",
+                "Organized and edited online course content.",
+                "Promoted from Senior Web Designer."
             ]
         }
     ],
