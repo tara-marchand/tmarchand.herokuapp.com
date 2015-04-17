@@ -1,6 +1,17 @@
 #resume {
     margin: 0 auto;
-    width: 35em;
+}
+
+@media screen {
+    #resume {
+        width: 43em;
+    }
+}
+
+@media print {
+    #resume {
+        width: 85%;
+    }
 }
 
 #skills .item {
