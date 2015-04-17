@@ -2,3 +2,20 @@
     margin: 0 auto;
     width: 35em;
 }
+
+#skills .keywords {
+    padding-left: 0;
+}
+
+#skills .keywords li {
+    display: inline;
+}
+
+#skills .keywords li:after {
+    content: ','
+}
+
+#skills .keywords li:last-of-type:after {
+    content: ''
+}
+

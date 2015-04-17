@@ -108,5 +108,50 @@
             "endDate": "1994",
             "gpa": ""
         }
+    ],
+    "skills": [
+        {
+            "keywords": [
+                "JavaScript",
+                "CSS",
+                "HTML",
+                "PHP",
+                "ASP.NET", 
+                "Java", 
+                "SQL"
+            ]
+        },
+        {
+            "keywords": [
+                "object-oriented programming", 
+                "software architecture", 
+                "web services", 
+                "design patterns", 
+                "regular expressions", 
+                "command-line interfaces", 
+                "shell scripting"
+            ]
+        },
+        {
+            "keywords": [
+                "version control systems", 
+                "build tools", 
+                "package managers", 
+                "content management systems", 
+                "web/application servers and databases", 
+                "feature and bug management systems"
+            ]
+        },
+        {
+            "keywords": [
+                "mobile-first and responsive design", 
+                "rapid prototyping", 
+                "agile methodologies", 
+                "localization", 
+                "analytics", 
+                "API integration", 
+                "image production"
+            ]
+        }
     ]
 }
