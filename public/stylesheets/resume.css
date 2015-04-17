@@ -3,6 +3,10 @@
     width: 35em;
 }
 
+#skills .item {
+    margin-bottom: 0;
+}
+
 #skills .keywords {
     padding-left: 0;
 }
