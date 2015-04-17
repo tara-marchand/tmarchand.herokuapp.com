@@ -32,11 +32,6 @@
         </div>
         {{/if}}
         {{/location}}
-        {{#if summary}}
-        <div class="summary">
-            <p>{{summary}}</p>
-        </div>
-        {{/if}}
         {{#if profiles.length}}
         <section id="profiles">
             {{#each profiles}}
@@ -47,6 +42,11 @@
             </span>
             {{/each}}
         </section>
+        {{/if}}
+        {{#if summary}}
+        <div class="summary">
+            <p>{{summary}}</p>
+        </div>
         {{/if}}
     </section>
     {{/basics}}
