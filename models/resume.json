@@ -6,7 +6,7 @@
         "email": "tara@mac.com",
         "phone": "415-518-0678",
         "website": "http://www.tmarchand.com/",
-        "summary": "Experienced technology lead and engineer.",
+        "summary": "Experienced technology lead and front-end architect/engineer.",
         "profiles": [
             {
                 "network": "GitHub",
@@ -34,10 +34,10 @@
             "endDate": "present",
             "summary": "",
             "highlights": [
-                "Lead user interface (UI) engineering and manage 2 developers working on web applications for Nike's new global events platform.",
-                "Architected and led front-end development on the website for Microsoft's just-launched Surface tablet.",
-                "Coded parts of the data-driven UI for the then-new Nike+ FuelBand fitness tracker's web application.",
-                "Promoted twice, from Senior Presentation Code Developer and Front End Solutions Architect."
+                "<strong>Nike Events Tool:</strong> Lead front-end engineering and manage 2 engineers building mobile-friendly web applications for this platform used daily by thousands of customers around the world. Example calendar: <a href=\"https://www.nike.com/events-registration/series?id=1607&days=7\" target=\"_blanks\">Nike+ San Francisco</a>",
+                "<strong>Microsoft Surface:</strong> Architected and led front-end development on the fully responsive website for the launch of the first generation of Microsoft's Surface tablet.",
+                "<strong>Nike+ FuelBand:</strong> Built the web application front end for the launch of this pioneering activity tracker. Created complex visualizations from user data.",
+                "Promoted from <strong>Front End Solutions Architect</strong> and previously from <strong>Senior Presentation Code Developer</strong>."
             ]
         },
         {
@@ -48,8 +48,8 @@
             "endDate": "2009",
             "summary": "",
             "highlights": [
-                "Developed client-side code for the first Adobe web application (Marketplace) to offer extensions and other add-ons for the company's Air and Photoshop applications.",
-                "Contributed as a UI engineer to Lexus.com and other websites for related brands Toyota and Scion."
+                "<strong>Adobe Marketplace:</strong> Developed the user interface for this new web application that offered publishing and downloading of extensions and other add-ons for the company's Air and Photoshop software.",
+                "<strong>Lexus.com:</strong> Worked on the front ends of Lexus.com and other websites for related brands Toyota and Scion, managing code in a complex contet management system."
             ]
         },
         {
@@ -60,9 +60,9 @@
             "endDate": "2007",
             "summary": "",
             "highlights": [
-                "Created the UIs for patient education websites for Amgen's top-selling rheumatoid arthritis drug Enbrel.",
-                "Built emails and launched large campaigns for Amgen and Sprint; analyzed resulting data.",
-                "Promoted from User Interface Developer."
+                "<strong>Amgen and Wyeth:</strong> Created the UIs for patient education websites (Enbrel.com, InsideRA.com, PsoriasisConnections.com) for Amgen's top-selling drug Enbrel.",
+                "<strong>Amgen; Sprint:</strong> Built emails and launched large campaigns using a complex email marketing platform, then analyzed resulting data.",
+                "Promoted from <strong>User Interface Developer</strong>."
             ]
         },
         {
@@ -73,7 +73,7 @@
             "endDate": "2004",
             "summary": "",
             "highlights": [
-                "Created content for sites and administered calendars and online courses for the UCSF medical community.",
+                "Created content for educational microsites and administered calendars and online courses for students, faculty, and staff in the UCSF medical community.",
                 "Provided hands-on technology support for medical school classroom instructors' hardware and software needs."
             ]
         },
@@ -85,9 +85,9 @@
             "endDate": "2003",
             "summary": "",
             "highlights": [
-                "Developed user interface for online courses about a wide variety of subjects offered by UC Berkeley's Extension program.",
-                "Organized and edited online course content.",
-                "Promoted from Senior Web Designer."
+                "Developed the user interface for online courses on a myriad of subjects offered by UC Berkeley's prestigious Extension program.",
+                "Organized, edited, and illustrated online course content.",
+                "Promoted from <strong>Senior Web Designer</strong>."
             ]
         }
     ],
