@@ -9,8 +9,20 @@
 }
 
 @media print {
+    body > .container {
+        padding: 0;
+    }
+
     #resume {
-        width: 85%;
+        width: 90%;
+    }
+
+    a[href]:after {
+        content: none;
+    }
+
+    #footer {
+        display: none;
     }
 }
 
@@ -27,7 +39,7 @@
 }
 
 #skills .keywords li:after {
-    content: ','
+    content: ';'
 }
 
 #skills .keywords li:last-of-type:after {

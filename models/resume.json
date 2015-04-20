@@ -6,7 +6,7 @@
         "email": "tara@mac.com",
         "phone": "415-518-0678",
         "website": "http://www.tmarchand.com/",
-        "summary": "Experienced technology lead and front-end architect/engineer.",
+        "summary": "Experienced technology lead and front-end engineer.",
         "profiles": [
             {
                 "network": "GitHub",
@@ -34,10 +34,10 @@
             "endDate": "present",
             "summary": "",
             "highlights": [
-                "<strong>Nike Events Tool:</strong> Lead front-end engineering and manage 2 engineers building mobile-friendly web applications for this platform used daily by thousands of customers around the world. Example calendar: <a href=\"https://www.nike.com/events-registration/series?id=1607&days=7\" target=\"_blanks\">Nike+ San Francisco</a>",
-                "<strong>Microsoft Surface:</strong> Architected and led front-end development on the fully responsive website for the launch of the first generation of Microsoft's Surface tablet.",
-                "<strong>Nike+ FuelBand:</strong> Built the web application front end for the launch of this pioneering activity tracker. Created complex visualizations from user data.",
-                "Promoted from <strong>Front End Solutions Architect</strong> and previously from <strong>Senior Presentation Code Developer</strong>."
+                "<strong>Nike Events Tool:</strong> Lead front-end development for this platform's localized, mobile-friendly web experiences used by tens of thousands of customers globally. Manage 2 front-end engineers. Integrate with custom APIs. Example calendar: <a href=\"https://www.nike.com/events-registration/series?id=1607&days=7\" target=\"_blanks\">Nike+ San Francisco</a>",
+                "<strong>Microsoft Surface:</strong> Architected and wrote presentation layer code for this fully responsive website developed for the launch of this tablet device. Integrated with custom CMS and API.",
+                "<strong>Nike+ FuelBand:</strong> Helped build the web application front end for the debut of this pioneering activity tracker. Created complex visualizations from user data in JavaScript.",
+                "Promoted from Front End Solutions Architect and previously from Senior Presentation Code Developer."
             ]
         },
         {
@@ -48,8 +48,8 @@
             "endDate": "2009",
             "summary": "",
             "highlights": [
-                "<strong>Adobe Marketplace:</strong> Developed the user interface for this new web application that offered publishing and downloading of extensions and other add-ons for the company's Air and Photoshop software.",
-                "<strong>Lexus.com:</strong> Worked on the front ends of Lexus.com and other websites for related brands Toyota and Scion, managing code in a complex contet management system."
+                "<strong>Adobe Marketplace:</strong> Helped develop the user interface for this new web application offering publishing and downloading of extensions and other add-ons for the company's Air and Photoshop software.",
+                "<strong>Lexus.com:</strong> Worked on the front ends of Lexus.com and other websites for related brands Toyota and Scion, managing code in the TeamSite content management system."
             ]
         },
         {
@@ -62,7 +62,7 @@
             "highlights": [
                 "<strong>Amgen and Wyeth:</strong> Created the UIs for patient education websites (Enbrel.com, InsideRA.com, PsoriasisConnections.com) for Amgen's top-selling drug Enbrel.",
                 "<strong>Amgen; Sprint:</strong> Built emails and launched large campaigns using a complex email marketing platform, then analyzed resulting data.",
-                "Promoted from <strong>User Interface Developer</strong>."
+                "Promoted from User Interface Developer."
             ]
         },
         {
@@ -111,46 +111,33 @@
     ],
     "skills": [
         {
+            "name": "Languages",
             "keywords": [
                 "JavaScript",
                 "CSS",
                 "HTML",
                 "PHP",
-                "ASP.NET", 
-                "Java", 
                 "SQL"
             ]
         },
         {
+            "name": "Tools",
             "keywords": [
-                "object-oriented programming", 
+                "JavaScript libraries and frameworks (jQuery, Angular)",
+                "CSS preprocessors (SASS, LESS)",
+                "version control systems (Git, Subversion)",
+                "build tools (Grunt)", 
+                "package managers (Bower, npm)"
+            ]
+        },
+        {
+            "name": "Interests",
+            "keywords": [
                 "software architecture", 
-                "web services", 
-                "design patterns", 
-                "regular expressions", 
-                "command-line interfaces", 
-                "shell scripting"
-            ]
-        },
-        {
-            "keywords": [
-                "version control systems", 
-                "build tools", 
-                "package managers", 
-                "content management systems", 
-                "web/application servers and databases", 
-                "feature and bug management systems"
-            ]
-        },
-        {
-            "keywords": [
-                "mobile-first and responsive design", 
-                "rapid prototyping", 
-                "agile methodologies", 
-                "localization", 
-                "analytics", 
-                "API integration", 
-                "image production"
+                "API integration",
+                "mobile-first & responsive design", 
+                "user experience & interaction design", 
+                "agile methodologies" 
             ]
         }
     ]

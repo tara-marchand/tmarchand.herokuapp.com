@@ -43,11 +43,6 @@
             {{/each}}
         </section>
         {{/if}}
-        {{#if summary}}
-        <div class="summary">
-            <p>{{summary}}</p>
-        </div>
-        {{/if}}
     </section>
     {{/basics}}
     <hr>
@@ -59,6 +54,7 @@
             {{#if keywords.length}}
             <li>
                 <ul class="keywords">
+                    {{#if name.length}}<strong>{{name}}:</strong> {{/if}}
                     {{#each keywords}}
                     <li>{{.}}</li>
                     {{/each}}
@@ -72,7 +68,7 @@
     <hr>
     {{#if work.length}}
     <section id="work">
-        <h2>Work</h2>
+        <h2>Experience</h2>
         {{#each work}}
         <div class="item">
             {{#if position}}
