@@ -6,6 +6,8 @@ var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 
+/* Instagram photos w/React START */
+
 gulp.task('photos-browserify-bundle', function() {
     'use strict';
 
@@ -49,6 +51,10 @@ gulp.task('photos-react-browser', function() {
     .pipe(source('photos-react-browser.js'))
     .pipe(gulp.dest('./public/scripts'));
 });
+
+/* Instagram photos w/React END */
+
+
 
 gulp.task('watch', ['photos-react-server', 'photos-browserify-bundle', 'photos-react-browser'], function() {
     'use strict';
