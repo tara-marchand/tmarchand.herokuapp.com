@@ -16,8 +16,8 @@ gulp.task('photos-browserify-bundle', function() {
     browserifyBundle.require('react');
     browserifyBundle.require('react-async');
     browserifyBundle.bundle()
-        .pipe(source('photos-browserify-bundle.js'))
-        .pipe(gulp.dest('./public/scripts'));
+        .pipe(source('browserify-bundle.js'))
+        .pipe(gulp.dest('./public/scripts/photos'));
 });
 
 gulp.task('photos-react-server', function() {
@@ -25,8 +25,8 @@ gulp.task('photos-react-server', function() {
 
     return gulp.src('./views/jsx/photos.jsx')
         .pipe(react())
-        .pipe(rename('photos-react-server.js'))
-        .pipe(gulp.dest('./public/scripts'));
+        .pipe(rename('react-server.js'))
+        .pipe(gulp.dest('./public/scripts/photos'));
 });
 
 gulp.task('photos-react-browser', function() {
@@ -44,12 +44,12 @@ gulp.task('photos-react-browser', function() {
     var watcher = watchify(bundler);
     return watcher.on('update', function() {
         watcher.bundle()
-        .pipe(source('photos-react-browser.js'))
-        .pipe(gulp.dest('./public/scripts'));
+        .pipe(source('react-browser.js'))
+        .pipe(gulp.dest('./public/scripts/photos'));
     })
     .bundle()
-    .pipe(source('photos-react-browser.js'))
-    .pipe(gulp.dest('./public/scripts'));
+    .pipe(source('react-browser.js'))
+    .pipe(gulp.dest('./public/scripts/photos'));
 });
 
 /* Instagram photos w/React END */

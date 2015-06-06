@@ -17,7 +17,7 @@ exports.photosHome = function(req, res) {
             }
 
             var images = res2.body.data;
-            var instagram = require('../public/scripts/photos-react-server');
+            var instagram = require('../public/scripts/photos/react-server');
             var instagramImageList = React.createFactory(instagram.InstagramImageList);
             var renderedList = React.renderToString(instagramImageList({ 
                 images: images,
