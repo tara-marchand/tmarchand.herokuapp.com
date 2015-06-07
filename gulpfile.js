@@ -5,10 +5,11 @@ var react = require('gulp-react');
 var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
+var gulp = require('gulp');
 
 /* Instagram photos w/React START */
 
-gulp.task('photos-browserify-bundle', function() {
+gulp.task('photos-bundle', function() {
     'use strict';
 
     var browserifyBundle = browserify();
@@ -16,7 +17,7 @@ gulp.task('photos-browserify-bundle', function() {
     browserifyBundle.require('react');
     browserifyBundle.require('react-async');
     browserifyBundle.bundle()
-        .pipe(source('browserify-bundle.js'))
+        .pipe(source('photos-bundle.js'))
         .pipe(gulp.dest('./public/scripts/photos'));
 });
 
@@ -54,7 +55,27 @@ gulp.task('photos-react-browser', function() {
 
 /* Instagram photos w/React END */
 
+// gulp.task('lib', function() {
+//     'use strict';
 
+//     browserify()
+//         .require(['jquery', 'underscore', 'backbone', 'firebase'])
+//         .bundle()
+//         .pipe(source('lib.js'))
+//         .pipe(gulp.dest('./public/scripts/contractors'));
+// });
+
+// gulp.task('app', function() {
+//     'use strict';
+
+//     browserify([ './public/scripts/contractors/app-src.js' ])
+//         .external(['jquery', 'underscore', 'backbone', 'firebase', 'backbonefire'])
+//         .bundle()
+//         .pipe(source('app-dist.js'))
+//         .pipe(gulp.dest('./public/scripts/contractors'));
+// });
+
+// gulp.task('contractors', ['lib', 'app']);
 
 gulp.task('watch', ['photos-react-server', 'photos-browserify-bundle', 'photos-react-browser'], function() {
     'use strict';
