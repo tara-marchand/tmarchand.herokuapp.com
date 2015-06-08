@@ -16,12 +16,18 @@ Contractors.ContractorCollection = Backbone.Firebase.Collection.extend({
 
 Contractors.ContractorView = Backbone.View.extend({
     events: {
+        'click a':  'edit',
         'click .delete': 'delete'
     },
     // id: 'contractor-' + Contractor.id,
     model: Contractors.Contractor,
     tagName: 'li',
-    template: _.template('<%= name %> <button class="delete">X</button>'),
+    template: _.template('\
+        <div><a href="#"><%= name %></a> <button class="delete">Delete</button></div>\
+        <form class="hidden">\
+        <label>Name: <input type="text" value="<%= name %>"></input></label><button class="close">Close</button>\
+        </form>\
+        '),
     initialize: function() {
         'use strict';
         this.listenTo(this.model, 'change', this.render);
@@ -31,6 +37,10 @@ Contractors.ContractorView = Backbone.View.extend({
         'use strict';
         this.$el.html(this.template(this.model.toJSON()));
         return this;
+    },
+    edit: function() {
+        'use strict';
+        this.$el.find('form').removeClass('hidden');
     },
     delete: function() {
         'use strict';
