@@ -8,7 +8,7 @@ Contractors.Contractor = Backbone.Model.extend({
     }
 });
 
-// Create a Firebase collection and set the 'url' property to the URL of our Firebase app
+// create a Firebase collection and set the 'url' property to the URL of our Firebase app
 Contractors.ContractorCollection = Backbone.Firebase.Collection.extend({
     url: 'https://tmarchand-contractors.firebaseio.com/contractors',
     model: Contractors.Contractor
@@ -16,20 +16,26 @@ Contractors.ContractorCollection = Backbone.Firebase.Collection.extend({
 
 Contractors.ContractorView = Backbone.View.extend({
     events: {
-        'click': 'duplicate'
+        'click .delete': 'delete'
     },
     // id: 'contractor-' + Contractor.id,
     model: Contractors.Contractor,
     tagName: 'li',
-    template: _.template('<%= name %>'),
+    template: _.template('<%= name %> <button class="delete">X</button>'),
+    initialize: function() {
+        'use strict';
+        this.listenTo(this.model, 'change', this.render);
+        this.model.bind('remove', this.remove, this);
+    },
     render: function() {
         'use strict';
         this.$el.html(this.template(this.model.toJSON()));
         return this;
     },
-    initialize: function() {
+    delete: function() {
         'use strict';
-        this.listenTo(this.model, 'change', this.render);
+        this.model.destroy();
+        this.$el.remove();
     }
 });
 
