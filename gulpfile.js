@@ -7,6 +7,7 @@ var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var gulp = require('gulp');
 var sass = require('gulp-ruby-sass');
+var autoprefixer = require('gulp-autoprefixer');
 
 var config = {
     scssDir: 'scss/',
@@ -20,10 +21,13 @@ gulp.task('scss', function() {
     return sass(config.scssDir, {
             style: 'expanded',
             loadPath: [
-                (config.nodeDir + 'normalize.css/normalize.css'),
                 (config.nodeDir + 'bootstrap-sass/assets/stylesheets')
             ]
         }) 
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+        }))
         .pipe(gulp.dest('./public/stylesheets'));
 });
 
@@ -97,5 +101,6 @@ gulp.task('photos-browser', function() {
 
 gulp.task('watch', ['scss', 'photos-lib', 'photos-server', 'photos-browser'], function() {
     'use strict';
-    // gulp.watch('views/jsx/**/*.jsx', ['photos-react-server', 'photos-react-browser']);
+    gulp.watch('scss/**/*.scss', ['scss']);
+    gulp.watch('views/jsx/**/*.jsx', ['photos-react-server', 'photos-react-browser']);
 });

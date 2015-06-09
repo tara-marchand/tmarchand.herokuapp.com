@@ -95,7 +95,6 @@ app.set('hbs', exphbs.create({
             app.locals.scripts = [];
             if (scripts !== undefined) {
                 return scripts.map(function(script) {
-                    console.dir(script);
                     if (script.type === '') {
                         return '<script src=\'' + script.name + '\'></script>';
                     } else {

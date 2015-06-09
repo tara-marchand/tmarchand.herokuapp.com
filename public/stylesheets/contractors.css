@@ -1,9 +1,16 @@
-@keyframes spin {
+@-webkit-keyframes spin {
   to {
+    -webkit-transform: rotate(1turn);
     transform: rotate(1turn);
   }
 }
-.progress {
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(1turn);
+    transform: rotate(1turn);
+  }
+}
+.spinner {
   position: relative;
   display: inline-block;
   width: 5em;
@@ -12,26 +19,22 @@
   font-size: 12px;
   text-indent: 999em;
   overflow: hidden;
+  -webkit-animation: spin 1s infinite steps(8);
   animation: spin 1s infinite steps(8);
-  background-color: none;
-  border-radius: 0;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  background-color: transparent;
 }
 
-.small.progress {
+.small.spinner {
   font-size: 6px;
 }
 
-.large.progress {
+.large.spinner {
   font-size: 24px;
 }
 
-.progress:before,
-.progress:after,
-.progress > div:before,
-.progress > div:after {
+.spinner:before,
+.spinner:after,
+.spinner > div:before,
+.spinner > div:after {
   content: '';
   position: absolute;
   top: 0;
@@ -43,25 +46,29 @@
   background: #eee;
   box-shadow: 0 3.5em #eee;
   /* container height - part height */
+  -webkit-transform-origin: 50% 2.5em;
   transform-origin: 50% 2.5em;
   /* container height / 2 */
 }
 
-.progress:before {
+.spinner:before {
   background: #555;
 }
 
-.progress:after {
+.spinner:after {
+  -webkit-transform: rotate(-45deg);
   transform: rotate(-45deg);
   background: #777;
 }
 
-.progress > div:before {
+.spinner > div:before {
+  -webkit-transform: rotate(-90deg);
   transform: rotate(-90deg);
   background: #999;
 }
 
-.progress > div:after {
+.spinner > div:after {
+  -webkit-transform: rotate(-135deg);
   transform: rotate(-135deg);
   background: #bbb;
 }

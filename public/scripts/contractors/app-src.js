@@ -11,7 +11,8 @@ Contractors.Contractor = Backbone.Model.extend({
 // create a Firebase collection and set the 'url' property to the URL of our Firebase app
 Contractors.ContractorCollection = Backbone.Firebase.Collection.extend({
     url: 'https://tmarchand-contractors.firebaseio.com/contractors',
-    model: Contractors.Contractor
+    model: Contractors.Contractor,
+    autoSync: false
 });
 
 Contractors.ContractorView = Backbone.View.extend({
@@ -77,10 +78,15 @@ Contractors.AppView = Backbone.View.extend({
         'use strict';
         this.$list = this.$el.find('ul');
         this.$input = this.$el.find('.new-contractor');
+        _.bindAll(this, 'hideLoader');
         // by listening to when the collection changes, we can add new items in real time
         this.listenTo(this.collection, 'add', this.addContractor);
-        this.listenTo(this.collection, 'request', this.showLoader);
-        this.listenTo(this.collection, 'sync', this.hideLoader);
+        this.fetchContractors();
+    },
+    fetchContractors: function() {
+        'use strict';
+        this.showLoader();
+        this.collection.fetch({ success: this.hideLoader });
     },
     addContractor: function(contractor) {
         'use strict';
@@ -89,14 +95,12 @@ Contractors.AppView = Backbone.View.extend({
     },
     showLoader: function() {
         'use strict';
-        console.log('showLoader');
-        this.$el.find('.progress').removeClass('hidden');
+        this.$el.find('.spinner').removeClass('hidden');
         this.isLoading = true;
     },
     hideLoader: function() {
         'use strict';
-        console.log('hideLoader');
-        this.$el.find('.progress').addClass('hidden');
+        this.$el.find('.spinner').addClass('hidden');
         this.isLoading = false;
     },
     createContractor: function() {
