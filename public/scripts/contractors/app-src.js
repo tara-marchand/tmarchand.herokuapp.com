@@ -17,7 +17,9 @@ Contractors.ContractorCollection = Backbone.Firebase.Collection.extend({
 Contractors.ContractorView = Backbone.View.extend({
     events: {
         'click a':  'edit',
-        'click .delete': 'delete'
+        'click .delete': 'delete',
+        'click .close': 'close',
+        'click .save': 'save'
     },
     // id: 'contractor-' + Contractor.id,
     model: Contractors.Contractor,
@@ -25,7 +27,8 @@ Contractors.ContractorView = Backbone.View.extend({
     template: _.template('\
         <div><a href="#"><%= name %></a> <button class="delete">Delete</button></div>\
         <form class="hidden">\
-        <label>Name: <input type="text" value="<%= name %>"></input></label><button class="close">Close</button>\
+        <label>Name: <input type="text" name="name" value="<%= name %>"></input><button class="save">Save</button></label>\
+        <button class="close">Close</button>\
         </form>\
         '),
     initialize: function() {
@@ -38,18 +41,34 @@ Contractors.ContractorView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         return this;
     },
-    edit: function() {
+    edit: function(e) {
         'use strict';
+        e.preventDefault();
         this.$el.find('form').removeClass('hidden');
     },
     delete: function() {
         'use strict';
         this.model.destroy();
         this.$el.remove();
+    },
+    close: function () {
+        'use strict';
+        this.$el.find('form').addClass('hidden');
+    },
+    save: function(e) {
+        'use strict';
+        e.preventDefault();
+
+        var $input = $(e.currentTarget).prev('input'); 
+        var key = $input.attr('name');
+        var value = $input.val();
+
+        this.model.set(key, value);
     }
 });
 
 Contractors.AppView = Backbone.View.extend({
+    isLoading: false,
     el: $('.contractors-container'),
     events: {
         'click .add-contractor': 'createContractor'
@@ -60,11 +79,25 @@ Contractors.AppView = Backbone.View.extend({
         this.$input = this.$el.find('.new-contractor');
         // by listening to when the collection changes, we can add new items in real time
         this.listenTo(this.collection, 'add', this.addContractor);
+        this.listenTo(this.collection, 'request', this.showLoader);
+        this.listenTo(this.collection, 'sync', this.hideLoader);
     },
     addContractor: function(contractor) {
         'use strict';
         var view = new Contractors.ContractorView({ model: contractor });
         this.$list.append(view.render().el);
+    },
+    showLoader: function() {
+        'use strict';
+        console.log('showLoader');
+        this.$el.find('.progress').removeClass('hidden');
+        this.isLoading = true;
+    },
+    hideLoader: function() {
+        'use strict';
+        console.log('hideLoader');
+        this.$el.find('.progress').addClass('hidden');
+        this.isLoading = false;
     },
     createContractor: function() {
         'use strict';

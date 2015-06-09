@@ -17,7 +17,7 @@ var config = {
 
 gulp.task('scss', function() {
     'use strict';
-    return sass(config.scssDir + 'styles.scss', {
+    return sass(config.scssDir, {
             style: 'expanded',
             loadPath: [
                 (config.nodeDir + 'normalize.css/normalize.css'),
@@ -95,7 +95,7 @@ gulp.task('photos-browser', function() {
 
 // gulp.task('contractors', ['lib', 'app']);
 
-gulp.task('watch', ['photos-lib', 'photos-server', 'photos-browser'], function() {
+gulp.task('watch', ['scss', 'photos-lib', 'photos-server', 'photos-browser'], function() {
     'use strict';
     // gulp.watch('views/jsx/**/*.jsx', ['photos-react-server', 'photos-react-browser']);
 });
