@@ -56,20 +56,29 @@ Contractors.ContractorView = Backbone.View.extend({
         'use strict';
         this.$el.find('form').addClass('hidden');
     },
+    showLoader: function() {
+        'use strict';
+        Backbone.trigger('loader', 'show');
+    },
+    hideLoader: function() {
+        'use strict';
+        Backbone.trigger('loader', 'hide');
+    },
     save: function(e) {
         'use strict';
         e.preventDefault();
+        this.showLoader();
 
         var $input = $(e.currentTarget).prev('input'); 
         var key = $input.attr('name');
         var value = $input.val();
 
         this.model.set(key, value);
+        this.model.save(key, value, { success: _.bind(this.hideLoader, this) });
     }
 });
 
 Contractors.AppView = Backbone.View.extend({
-    isLoading: false,
     el: $('.contractors-container'),
     events: {
         'click .add-contractor': 'createContractor'
@@ -78,30 +87,42 @@ Contractors.AppView = Backbone.View.extend({
         'use strict';
         this.$list = this.$el.find('ul');
         this.$input = this.$el.find('.new-contractor');
-        _.bindAll(this, 'hideLoader');
         // by listening to when the collection changes, we can add new items in real time
         this.listenTo(this.collection, 'add', this.addContractor);
+        this.listenTo(Backbone, 'loader', this.loaderToggle);
         this.fetchContractors();
     },
     fetchContractors: function() {
         'use strict';
-        this.showLoader();
-        this.collection.fetch({ success: this.hideLoader });
+        this.loaderShow();
+        this.collection.fetch({ success: _.bind(this.loaderHide, this) });
+    },
+    syncContractors: function() {
+        'use strict';
+        this.loaderShow();
+        this.collection.sync({ success: _.bind(this.loaderHide, this) });
     },
     addContractor: function(contractor) {
         'use strict';
         var view = new Contractors.ContractorView({ model: contractor });
         this.$list.append(view.render().el);
+        contractor.save();
     },
-    showLoader: function() {
+    loaderToggle: function(showOrHide) {
         'use strict';
-        this.$el.find('.spinner').removeClass('hidden');
-        this.isLoading = true;
+        if (showOrHide === 'show') {
+            this.$el.find('.spinner').removeClass('hidden');
+        } else if (showOrHide === 'hide'){
+            this.$el.find('.spinner').addClass('hidden');
+        }
     },
-    hideLoader: function() {
+    loaderShow: function() {
         'use strict';
-        this.$el.find('.spinner').addClass('hidden');
-        this.isLoading = false;
+        this.loaderToggle('show');
+    },
+    loaderHide: function() {
+        'use strict';
+        this.loaderToggle('hide');
     },
     createContractor: function() {
         'use strict';
