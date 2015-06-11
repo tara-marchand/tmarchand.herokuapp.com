@@ -4,7 +4,8 @@ var Contractors = {};
 
 Contractors.Contractor = Backbone.Model.extend({
     defaults: {
-        name: 'New Contractor'
+        name: 'New Contractor',
+        url: ''
     }
 });
 
@@ -19,19 +20,13 @@ Contractors.ContractorView = Backbone.View.extend({
     events: {
         'click a':  'edit',
         'click .delete': 'delete',
-        'click .close': 'close',
-        'click .save': 'save'
+        'click .cancel': 'cancel',
+        'click .save': 'save'   
     },
     // id: 'contractor-' + Contractor.id,
     model: Contractors.Contractor,
     tagName: 'li',
-    template: _.template('\
-        <div><a href="#"><%= name %></a> <button class="delete">Delete</button></div>\
-        <form class="hidden">\
-        <label>Name: <input type="text" name="name" value="<%= name %>"></input><button class="save">Save</button></label>\
-        <button class="close">Close</button>\
-        </form>\
-        '),
+    template: _.template($('.contractor-view').html()),
     initialize: function() {
         'use strict';
         this.listenTo(this.model, 'change', this.render);
@@ -45,16 +40,16 @@ Contractors.ContractorView = Backbone.View.extend({
     edit: function(e) {
         'use strict';
         e.preventDefault();
-        this.$el.find('form').removeClass('hidden');
+        this.$el.find('.edit-fields').removeClass('hidden');
     },
     delete: function() {
         'use strict';
         this.model.destroy();
         this.$el.remove();
     },
-    close: function () {
+    cancel: function () {
         'use strict';
-        this.$el.find('form').addClass('hidden');
+        this.$el.find('.edit-fields').addClass('hidden');
     },
     showLoader: function() {
         'use strict';
@@ -67,19 +62,29 @@ Contractors.ContractorView = Backbone.View.extend({
     save: function(e) {
         'use strict';
         e.preventDefault();
+
         this.showLoader();
 
-        var $input = $(e.currentTarget).prev('input'); 
-        var key = $input.attr('name');
-        var value = $input.val();
+        var modelToSave ={};
+        var names = ['name', 'url'];
+        var $input = null;
+        var key = '';
+        var value = '';
 
-        this.model.set(key, value);
-        this.model.save(key, value, { success: _.bind(this.hideLoader, this) });
+        for (var i = names.length - 1; i >= 0; i--) {
+            $input = this.$el.find('[name="' + names[i] + '"]');
+            key = $input.attr('name');
+            value = $input.val();
+            modelToSave[key] = value;
+        }
+
+        this.model.set(modelToSave);
+        this.model.save(modelToSave, { success: _.bind(this.hideLoader, this) });
     }
 });
 
 Contractors.AppView = Backbone.View.extend({
-    el: $('.contractors-container'),
+    el: $('.contractors-view'),
     events: {
         'click .add-contractor': 'createContractor'
     },

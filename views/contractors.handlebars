@@ -5,12 +5,36 @@
     <li>React</li>
 </ul>
 <hr>
-<div class="contractors-container">
+<div class="contractors-view">
     <ul></ul>
     <input type="text" class="new-contractor" placeholder="New Contractor">
     <button class="add-contractor">Add Contractor</button>
 	<div class="small spinner"><div>Loading…</div></div>
 </div>
+
+<script type="text/template" class="contractor-view">
+    <form class="form-inline">
+        <fieldset class="display-fields">
+            <a href="#"><%= name %></a> <button class="delete">Delete</button>
+        </fieldset>
+        <fieldset class="edit-fields hidden">
+            <div class="form-group">
+                <label for="name<%= id %>">Name:</label>
+                <input id="name<%= id %>" type="text" name="name" value="<%= name %>">
+            </div>
+            <div class="form-group">
+                <label for="url<%= id %>">URL:</label>
+                <input id="url<%= id %>" type="url" name="url" value="<%= url %>">
+            </div>
+            <hr>
+            <div class="form-group">
+                <button class="save">Save</button>
+                <button class="cancel">Cancel</button>
+            </div>
+        </fieldset>
+    </form>
+</script>
+
 {{addScript "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"}}
 {{addScript "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"}}
 {{addScript "//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.2.0/backbone-min.js"}}

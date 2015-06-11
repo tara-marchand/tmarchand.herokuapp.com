@@ -77,6 +77,8 @@ gulp.task('photos-browser', function() {
     .pipe(gulp.dest('./public/scripts/photos'));
 });
 
+gulp.task('photos-jsx', ['photos-server', 'photos-browser']);
+
 // gulp.task('lib', function() {
 //     'use strict';
 
@@ -102,5 +104,5 @@ gulp.task('photos-browser', function() {
 gulp.task('watch', ['scss', 'photos-lib', 'photos-server', 'photos-browser'], function() {
     'use strict';
     gulp.watch('scss/**/*.scss', ['scss']);
-    gulp.watch('views/jsx/**/*.jsx', ['photos-react-server', 'photos-react-browser']);
+    gulp.watch('views/jsx/**/*.jsx', ['photos-jsx']);
 });
