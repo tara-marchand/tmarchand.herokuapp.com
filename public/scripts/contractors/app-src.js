@@ -2,6 +2,18 @@
 
 var Contractors = {};
 
+Contractors.viewHelpers = {
+    getHiddenClass: function() {
+        'use strict';
+
+        var hiddenClass = '';
+        if (this.isBeingEdited === true) {
+            hiddenClass = ' hidden';
+        }
+        return hiddenClass;
+    }
+};
+
 Contractors.Contractor = Backbone.Model.extend({
     defaults: {
         name: 'New Contractor',
@@ -18,7 +30,7 @@ Contractors.ContractorCollection = Backbone.Firebase.Collection.extend({
 
 Contractors.ContractorView = Backbone.View.extend({
     events: {
-        'click a':  'edit',
+        'click a':  'toggleEdit',
         'click .delete': 'delete',
         'click .cancel': 'cancel',
         'click .save': 'save'   
@@ -27,6 +39,7 @@ Contractors.ContractorView = Backbone.View.extend({
     model: Contractors.Contractor,
     tagName: 'li',
     template: _.template($('.contractor-view').html()),
+    isBeingEdited: false,
     initialize: function() {
         'use strict';
         this.listenTo(this.model, 'change', this.render);
@@ -37,10 +50,11 @@ Contractors.ContractorView = Backbone.View.extend({
         this.$el.html(this.template(this.model.toJSON()));
         return this;
     },
-    edit: function(e) {
+    toggleEdit: function(e) {
         'use strict';
         e.preventDefault();
-        this.$el.find('.edit-fields').removeClass('hidden');
+        this.isBeingEdited = !this.isBeingEdited;
+        this.$el.find('.edit-fields').toggleClass('hidden', !this.isBeingEdited);
     },
     delete: function() {
         'use strict';
