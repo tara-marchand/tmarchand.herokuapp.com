@@ -17,15 +17,17 @@
     "undef":     true,
     "unused":    true,
     "trailing":  true,
- 
+
     "browser":   true,
     "jquery":    true,
- 
+
     "globals": {
         "console": false,
         "Error": false,
         "exports": true,
         "module": true,
-        "require": true
+        "require": true,
+        "Backbone": false,
+        "_": false
     }
 }
