@@ -81,7 +81,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 /* static files and Bower components */
-app.use(express.static(__dirname + '/public'));
+app.use('/', express.static(__dirname + '/public'));
+app.use('/node_modules', express.static(__dirname + '/node_modules'));
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 /* nav items */
 app.set('navItems', nav.getItems());
@@ -94,7 +95,6 @@ app.set('hbs', exphbs.create({
             app.locals.scripts = [];
             if (scripts !== undefined) {
                 return scripts.map(function(script) {
-                    console.dir(script);
                     if (script.type === '') {
                         return '<script src=\'' + script.name + '\'></script>';
                     } else {

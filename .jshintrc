@@ -8,6 +8,7 @@
     "indent":    4,
     "latedef":   true,
     "maxparams": 3,
+    "multistr":  true,
     "newcap":    true,
     "noarg":     true,
     "noempty":   true,
