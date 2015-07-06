@@ -8,10 +8,12 @@ var watchify = require('watchify');
 var gulp = require('gulp');
 var sass = require('gulp-ruby-sass');
 var autoprefixer = require('gulp-autoprefixer');
+var mocha = require('gulp-mocha');
 
 var config = {
     scssDir: 'scss/',
-    nodeDir: 'node_modules/'
+    nodeDir: 'node_modules/',
+    contractorsDir: './public/scripts/contractors/'
 };
 
 /* CSS */
@@ -79,30 +81,27 @@ gulp.task('photos-browser', function() {
 
 gulp.task('photos-jsx', ['photos-server', 'photos-browser']);
 
-// gulp.task('lib', function() {
-//     'use strict';
+gulp.task('contractors', function() {
+    'use strict';
+    browserify({
+            debug: true,
+            entries: config.contractorsDir + 'app-src/app.js'
+        })
+        .exclude('backbone')
+        .bundle()
+        .pipe(source('contractors-app.js'))
+        .pipe(gulp.dest(config.contractorsDir));
+});
 
-//     browserify()
-//         .require(['jquery', 'underscore', 'backbone', 'firebase'])
-//         .bundle()
-//         .pipe(source('lib.js'))
-//         .pipe(gulp.dest('./public/scripts/contractors'));
-// });
+gulp.task('contractors-test', function() {
+    'use strict';
+    return gulp.src(config.contractorsDir + 'app-test.js')
+        .pipe(mocha());
+});
 
-// gulp.task('app', function() {
-//     'use strict';
-
-//     browserify([ './public/scripts/contractors/app-src.js' ])
-//         .external(['jquery', 'underscore', 'backbone', 'firebase', 'backbonefire'])
-//         .bundle()
-//         .pipe(source('app-dist.js'))
-//         .pipe(gulp.dest('./public/scripts/contractors'));
-// });
-
-// gulp.task('contractors', ['lib', 'app']);
-
-gulp.task('watch', ['scss', 'photos-lib', 'photos-server', 'photos-browser'], function() {
+gulp.task('watch', ['scss', 'photos-jsx'], function() {
     'use strict';
     gulp.watch('scss/**/*.scss', ['scss']);
     gulp.watch('views/jsx/**/*.jsx', ['photos-jsx']);
+    gulp.watch('public/scripts/contractors/**/*-src.js', ['contractors-test']);
 });
