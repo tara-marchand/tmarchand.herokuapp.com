@@ -85,31 +85,11 @@ gulp.task('photos-browser', function() {
 
 gulp.task('photos-jsx', ['photos-server', 'photos-browser']);
 
-gulp.task('get-backbonefire', function() {
-
-    try {
-        del('./public/scripts/contractors/app-src/backbonefire.js');
-    } catch (e) {};
-    remoteSrc(['backbonefire.js'], {
-            base: 'https://cdn.firebase.com/libs/backbonefire/0.5.1/',
-            buffer: false
-        })
-        .pipe(gulp.dest('./public/scripts/contractors/app-src/'));
-
-    try {
-        del('./public/scripts/contractors/app-src/backbonefire-module.js');
-    } catch (e) {};
-    gulp.src('./public/scripts/contractors/app-src/backbonefire.js')
-        .pipe(wrapCommonJs())
-        .pipe(source('backbonefire-module.js'))
-        .pipe(gulp.dest('./public/scripts/contractors/app-src/'));
-});
-
 gulp.task('contractors', function() {
     'use strict';
     browserify({
             debug: true,
-            require: ['jquery', 'underscore', 'backbone', 'firebase', './public/scripts/contractors/app-src/backbonefire.js'],
+            exclude: ['jquery', 'underscore', 'backbone', 'firebase'],
             entries: config.contractorsDir + 'app-src/app.js'
         })
         .bundle()
