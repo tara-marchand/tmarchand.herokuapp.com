@@ -2,7 +2,7 @@
 
 var chai = require('chai');
 var expect = chai.expect;
-var src = require('./app.js');
+var src = require('./contractors-app.js');
 
 describe('Contractors', function() {
     'use strict';
