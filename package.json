@@ -41,11 +41,11 @@
     "glob": "^4.3.5",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
+    "gulp-compass": "^2.1.0",
     "gulp-mocha": "^2.1.2",
     "gulp-react": "^2.0.0",
     "gulp-remote-src": "^0.3.0",
     "gulp-rename": "^1.2.2",
-    "gulp-ruby-sass": "^1.0.5",
     "gulp-util": "^3.0.5",
     "gulp-wrap-commonjs": "^0.1.13",
     "node-libs-browser": "^0.5.2",
@@ -53,6 +53,7 @@
     "reactify": "^1.0.0",
     "superagent": "^0.21.0",
     "supervisor": "^0.5.7",
+    "susy": "^2.2.5",
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^2.3.0"
   }

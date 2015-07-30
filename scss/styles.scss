@@ -1,4 +1,14 @@
-@import "_bootstrap.scss";
+// @import "compass";
+// @import "breakpoint";
+@import 'susy';
+
+$susy: (
+  columns: 12,
+  gutter-position: inside,
+  math: fluid,
+  output: float,
+  flow: rtl,
+);
 
 html {
   position: relative;

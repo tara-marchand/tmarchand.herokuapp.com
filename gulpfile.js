@@ -6,30 +6,31 @@ var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
 var gulp = require('gulp');
-var sass = require('gulp-ruby-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var mocha = require('gulp-mocha');
-var wrapCommonJs = require('gulp-wrap-commonjs');
-var remoteSrc = require('gulp-remote-src');
-var del = require('del');
+var compass = require('gulp-compass');
 var fs = require('fs');
 
 var config = {
-    scssDir: 'scss/',
-    nodeDir: 'node_modules/',
+    scssDir: './scss/',
+    nodeDir: './node_modules/',
     contractorsDir: './public/scripts/contractors/'
 };
 
 /* CSS */
 
-gulp.task('scss', function() {
+gulp.task('compass', function() {
     'use strict';
-    return sass(config.scssDir, {
-            style: 'expanded',
-            loadPath: [
-                (config.nodeDir + 'bootstrap-sass/assets/stylesheets')
-            ]
-        })
+    gulp.src(config.scssDir + 'styles.scss')
+        .pipe(compass({
+            project: './',
+            css: 'public/stylesheets',
+            // bug: must specify absolute path for scss
+            // https://github.com/appleboy/gulp-compass/issues/61#issuecomment-111712719
+            sass: fs.realpathSync(__dirname) + '/scss',
+            import_path: [fs.realpathSync(__dirname) + '/node_modules/susy/sass'],
+            debug: true
+        }))
         .pipe(autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false
