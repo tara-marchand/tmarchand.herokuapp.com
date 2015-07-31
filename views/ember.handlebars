@@ -53,18 +53,19 @@
         \{{/if}}
     </li>
     \{{/each}}
-    </ul>   
+    </ul>
 </script>
 
-{{addScript "bower_components/jquery/dist/jquery.min.js"}}
-{{addScript "bower_components/handlebars/handlebars.min.js"}}
-{{addScript "bower_components/ember/ember.min.js"}}
-{{addScript "bower_components/ember-data/ember-data.min.js"}}
-{{addScript "bower_components/ember-localstorage-adapter/localstorage_adapter.js"}}
+{{addScript "node_modules/jquery/dist/jquery.js"}}
+{{addScript "node_modules/handlebars/dist/handlebars.min.js"}}
+
+{{addScript "node_modules/ember/ember.js"}}
+{{addScript "https://cdnjs.cloudflare.com/ajax/libs/ember-data.js/1.13.7/ember-data.min.js"}}
+{{addScript "https://cdnjs.cloudflare.com/ajax/libs/ember-localstorage-adapter/0.3.1/localstorage_adapter.js"}}
+
 {{addScript "scripts/ember/application.js"}}
 {{addScript "scripts/ember/router.js"}}
 {{addScript "scripts/ember/models/todo.js"}}
 {{addScript "scripts/ember/controllers/todos-controller.js"}}
 {{addScript "scripts/ember/controllers/todo-controller.js"}}
 {{addScript "scripts/ember/views/edit-todo-view.js"}}
-
