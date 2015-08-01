@@ -1,0 +1,16 @@
+<div class="spotify-song-collection-view">
+    <ul></ul>
+	<div class="small spinner"><div>Loading…</div></div>
+</div>
+
+<script type="text/template" class="spotify-song-view">
+{{{artists.artist[0].name}}}
+</script>
+
+<script id="songs" type="application/json">
+    {{{ jsonifiedSongs }}}
+</script>
+{{addScript "../node_modules/jquery/dist/jquery.min.js"}}
+{{addScript "../node_modules/underscore/underscore-min.js"}}
+{{addScript "../node_modules/backbone/backbone-min.js"}}
+{{addScript "scripts/spotify/spotify-app.js"}}

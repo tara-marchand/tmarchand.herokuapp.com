@@ -11,7 +11,7 @@ module.exports = {
     twitter: {
         consumerKey: process.env.TWITTER_CONSUMER_KEY,
         consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-        callbackURL: "/auth/twitter/callback",
+        callbackURL: '/auth/twitter/callback',
         passReqToCallback: true
     },
 
@@ -21,5 +21,10 @@ module.exports = {
 
     instagram: {
         clientId: process.env.INSTAGRAM_CLIENT_ID
+    },
+
+    spotify: {
+        clientId: process.env.SPOTIFY_CLIENT_ID,
+        clientSecret: process.env.SPOTIFY_CLIENT_SECRET
     }
 };

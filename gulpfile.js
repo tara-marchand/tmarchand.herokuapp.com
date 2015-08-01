@@ -9,15 +9,12 @@ var gulp = require('gulp');
 var sass = require('gulp-ruby-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var mocha = require('gulp-mocha');
-var wrapCommonJs = require('gulp-wrap-commonjs');
-var remoteSrc = require('gulp-remote-src');
-var del = require('del');
-var fs = require('fs');
 
 var config = {
     scssDir: 'scss/',
     nodeDir: 'node_modules/',
-    contractorsDir: './public/scripts/contractors/'
+    contractorsDir: './public/scripts/contractors/',
+    spotifyDir: './public/scripts/spotify/'
 };
 
 /* CSS */
@@ -35,6 +32,20 @@ gulp.task('scss', function() {
             cascade: false
         }))
         .pipe(gulp.dest('./public/stylesheets'));
+});
+
+gulp.task('ember-lib', function() {
+    'use strict';
+
+    var browserifyBundle = browserify();
+    browserifyBundle.require('jquery');
+    // browserifyBundle.require('handlebars');
+    // browserifyBundle.require('ember');
+    browserifyBundle.require('ember-data');
+    browserifyBundle.require('ember-localstorage-adapter');
+    browserifyBundle.bundle()
+        .pipe(source('lib.js'))
+        .pipe(gulp.dest('./public/scripts/ember'));
 });
 
 /* Instagram photos w/React */
@@ -103,9 +114,21 @@ gulp.task('contractors-test', function() {
         .pipe(mocha({ globals: ['Backbone'] }));
 });
 
-gulp.task('watch', ['scss', 'photos-jsx'], function() {
+gulp.task('spotify', function() {
+    'use strict';
+    browserify({
+            debug: true,
+            entries: config.spotifyDir + 'app-src/app.js'
+        })
+        .bundle()
+        .pipe(source('spotify-app.js'))
+        .pipe(gulp.dest(config.spotifyDir));
+});
+
+gulp.task('watch', ['scss', 'ember-lib', 'photos-jsx', 'spotify'], function() {
     'use strict';
     gulp.watch('scss/**/*.scss', ['scss']);
     gulp.watch('views/jsx/**/*.jsx', ['photos-jsx']);
-    gulp.watch('public/scripts/contractors/**/*-src.js', ['contractors-test']);
+    gulp.watch('public/scripts/contractors/app-src/**/*.js', ['contractors-test']);
+    gulp.watch('public/scripts/spotify/app-src/**/*.js', ['spotify']);
 });
