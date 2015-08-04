@@ -2,53 +2,59 @@
 
 var app = app || {};
 
-// generic base view class with boilerplate render method
-app.BaseView = Backbone.View.extend({
-    render: function() {
-        'use strict';
-
-        // precompile template
-        var template = _.template(this.template);
-        // create markup by compiling template with data
-        var data = (this.model) ? this.model.toJSON() : {};
-        var markup = template(data);
-
-        this.$el.html(markup);
-        return this;
-    }
-});
-
-app.AppView = app.BaseView.extend({
-    template: '<section></section>',
+app.AppView = Backbone.View.extend({
+    el: '.page-content',
+    template: '<input type="text" name="name">' +
+        '<input type="number" name="age">' +
+        '<button>Add</button>',
+    events: {
+        'click button': 'addItem'
+    },
     initialize: function() {
         'use strict';
-        this.$pageContent = $('.page-content')[0];
         this.items = new app.Items();
-
-        if (this.items.length) {
-            this.$pageContent.append(this.render());
-        }
-
-        this.listenTo(app.Items, 'add', this.addItem);
+        this.render();
+        this.listenTo(this.items, 'add', this.renderItem);
     },
-    addItem: function(item) {
+    render: function() {
         'use strict';
-        var itemView = new app.ItemView({ model: item });
+        this.$el.append(_.template(this.template)({}));
+    },
+    addItem: function() {
+        'use strict';
+        var modelData = {};
+        var $input = null;
 
+        this.$el.find('input').each(function(i, el) {
+            $input = $(el);
+            if ($input.val() !== '') {
+                modelData[$input.attr('name')] = $input.val();
+            }
+        });
+        this.items.add(new app.Item(modelData));
+    },
+    renderItem: function(item) {
+        'use strict';
+        this.$el.append(new app.ItemView({ model: item }).render());
     }
 });
 
 // views (extends base view class)
-app.ItemView = app.BaseView.extend({
-    template: '<div><%= name %>:  <%= age %></div>' +
-        '<button>Edit</button>'
+app.ItemView = Backbone.View.extend({
+    el: 'li',
+    template: _.template('<%= name %>:  <%= age %><br>' + '<button>Edit</button>'),
+    render: function() {
+        'use strict';
+        return this.$el.html(this.template(this.model.toJSON()));
+    }
 });
-
-app.ItemsView = app.BaseView.extend({});
 
 // models
 app.Item = Backbone.Model.extend({
-    name: ''
+    defaults: {
+        name: '',
+        age: 0
+    }
 });
 
 app.Items = Backbone.Collection.extend({
