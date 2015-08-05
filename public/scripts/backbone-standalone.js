@@ -1,51 +1,26 @@
-/* globals $, _, Backbone */
+/* globals _, Backbone */
+
+'use strict';
 
 var app = app || {};
 
 app.AppView = Backbone.View.extend({
-    el: '.page-content',
-    template: '<input type="text" name="name">' +
-        '<input type="number" name="age">' +
-        '<button>Add</button>',
-    events: {
-        'click button': 'addItem'
-    },
+    el: '#page-content',
+
     initialize: function() {
-        'use strict';
-        this.items = new app.Items();
-        this.render();
-        this.listenTo(this.items, 'add', this.renderItem);
-    },
-    render: function() {
-        'use strict';
-        this.$el.append(_.template(this.template)({}));
-    },
-    addItem: function() {
-        'use strict';
-        var modelData = {};
-        var $input = null;
-
-        this.$el.find('input').each(function(i, el) {
-            $input = $(el);
-            if ($input.val() !== '') {
-                modelData[$input.attr('name')] = $input.val();
-            }
+        this.itemModel = new app.Item({
+            name: 'yo',
+            age: 666
         });
-        this.items.add(new app.Item(modelData));
+        this.itemView = new app.ItemView({
+            model: this.itemModel
+        });
+        this.render();
     },
-    renderItem: function(item) {
-        'use strict';
-        this.$el.append(new app.ItemView({ model: item }).render());
-    }
-});
 
-// views (extends base view class)
-app.ItemView = Backbone.View.extend({
-    el: 'li',
-    template: _.template('<%= name %>:  <%= age %><br>' + '<button>Edit</button>'),
     render: function() {
-        'use strict';
-        return this.$el.html(this.template(this.model.toJSON()));
+        var itemMarkup = this.itemView.render().$el.html();
+        this.$el.html(itemMarkup);
     }
 });
 
@@ -57,8 +32,23 @@ app.Item = Backbone.Model.extend({
     }
 });
 
-app.Items = Backbone.Collection.extend({
+app.ItemsCollection = Backbone.Collection.extend({
     model: app.Item
 });
 
-new app.AppView();
+// views
+app.ItemView = Backbone.View.extend({
+    tagName: 'p',
+
+    template: _.template('Name: <%= name %> - Age: <%= age %>'),
+
+    render: function() {
+        var attributes = this.model.attributes;
+        var innerMarkup = this.template(attributes);
+
+        this.$el.html(innerMarkup);
+        return this;
+    }
+});
+
+app.thisAppView = new app.AppView();
