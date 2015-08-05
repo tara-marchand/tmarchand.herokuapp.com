@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 var browserify = require('browserify');
 var glob = require('glob');
 var gulp = require('gulp');
@@ -5,28 +7,22 @@ var react = require('gulp-react');
 var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
 var watchify = require('watchify');
-var gulp = require('gulp');
-var sass = require('gulp-ruby-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var mocha = require('gulp-mocha');
+var sass = require('gulp-sass');
 
 var config = {
-    scssDir: 'scss/',
-    nodeDir: 'node_modules/',
-    contractorsDir: './public/scripts/contractors/',
-    spotifyDir: './public/scripts/spotify/'
+    sassDir: './sass/',
+    nodeDir: './node_modules/',
+    contractorsDir: './public/scripts/contractors/'
 };
 
 /* CSS */
 
-gulp.task('scss', function() {
+gulp.task('sass', function() {
     'use strict';
-    return sass(config.scssDir, {
-            style: 'expanded',
-            loadPath: [
-                (config.nodeDir + 'bootstrap-sass/assets/stylesheets')
-            ]
-        })
+    gulp.src(config.sassDir + 'styles.scss')
+        .pipe(sass())
         .pipe(autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false
@@ -114,20 +110,9 @@ gulp.task('contractors-test', function() {
         .pipe(mocha({ globals: ['Backbone'] }));
 });
 
-gulp.task('spotify', function() {
+gulp.task('watch', ['sass', 'photos-jsx'], function() {
     'use strict';
-    browserify({
-            debug: true,
-            entries: config.spotifyDir + 'app-src/app.js'
-        })
-        .bundle()
-        .pipe(source('spotify-app.js'))
-        .pipe(gulp.dest(config.spotifyDir));
-});
-
-gulp.task('watch', ['scss', 'ember-lib', 'photos-jsx', 'spotify'], function() {
-    'use strict';
-    gulp.watch('scss/**/*.scss', ['scss']);
+    gulp.watch('sass/**/*.scss', ['sass']);
     gulp.watch('views/jsx/**/*.jsx', ['photos-jsx']);
     gulp.watch('public/scripts/contractors/app-src/**/*.js', ['contractors-test']);
     gulp.watch('public/scripts/spotify/app-src/**/*.js', ['spotify']);

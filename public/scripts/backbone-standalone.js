@@ -1,39 +1,64 @@
-/**
- * Examples from Backbone.js Patterns and Best Practices
- */
+/* globals $, _, Backbone */
 
-// generic base view class with boilerplate render method
-var BaseView = Backbone.View.extend({
+var app = app || {};
+
+app.AppView = Backbone.View.extend({
+    el: '.page-content',
+    template: '<input type="text" name="name">' +
+        '<input type="number" name="age">' +
+        '<button>Add</button>',
+    events: {
+        'click button': 'addItem'
+    },
+    initialize: function() {
+        'use strict';
+        this.items = new app.Items();
+        this.render();
+        this.listenTo(this.items, 'add', this.renderItem);
+    },
     render: function() {
         'use strict';
+        this.$el.append(_.template(this.template)({}));
+    },
+    addItem: function() {
+        'use strict';
+        var modelData = {};
+        var $input = null;
 
-        // precompile template
-        var template = _.template(this.template);
-        // create markup by compiling template with data
-        var data = (this.model) ? this.model.toJSON() : {};
-        var markup = template(data);
-
-        this.$el.html(markup);
-        return this;
+        this.$el.find('input').each(function(i, el) {
+            $input = $(el);
+            if ($input.val() !== '') {
+                modelData[$input.attr('name')] = $input.val();
+            }
+        });
+        this.items.add(new app.Item(modelData));
+    },
+    renderItem: function(item) {
+        'use strict';
+        this.$el.append(new app.ItemView({ model: item }).render());
     }
 });
 
-// specific item view class that extends base view class
-var ItemView = BaseView.extend({
-    template: '<div><%= name %></div>'
+// views (extends base view class)
+app.ItemView = Backbone.View.extend({
+    el: 'li',
+    template: _.template('<%= name %>:  <%= age %><br>' + '<button>Edit</button>'),
+    render: function() {
+        'use strict';
+        return this.$el.html(this.template(this.model.toJSON()));
+    }
 });
 
-var ItemModel = Backbone.Model.extend({
-    name: ''
+// models
+app.Item = Backbone.Model.extend({
+    defaults: {
+        name: '',
+        age: 0
+    }
 });
 
-// instances
-var item = new ItemModel({
-    name: 'Fred'
-});
-var itemView = new ItemView({
-    model: item
+app.Items = Backbone.Collection.extend({
+    model: app.Item
 });
 
-
-$('.page-content').append(itemView.render().$el);
+new app.AppView();

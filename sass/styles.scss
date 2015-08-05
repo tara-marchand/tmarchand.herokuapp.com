@@ -1,0 +1,41 @@
+// @import "compass";
+// @import "breakpoint";
+@import '../node_modules/normalize-sass/normalize';
+@import '../node_modules/susy/sass/susy';
+@import '../node_modules/breakpoint-sass/stylesheets/breakpoint';
+@import '../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+$susy: (
+    columns: 12,
+    container: 80%
+);
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* margin bottom by footer height + 20px for margin */
+    margin-bottom: 80px;
+}
+.wrapper {
+    @include container;
+    padding: 60px 15px 0;
+}
+.navbar .navbar-nav a {
+    text-transform: capitalize;
+}
+.wrapper .text-muted {
+    margin: 20px 0;
+}
+#footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+}
+#footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
