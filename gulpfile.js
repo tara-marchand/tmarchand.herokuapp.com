@@ -21,7 +21,7 @@ var config = {
 
 gulp.task('sass', function() {
     'use strict';
-    gulp.src(config.sassDir + 'styles.scss')
+    gulp.src(config.sassDir + '**/*.scss')
         .pipe(sass())
         .pipe(autoprefixer({
             browsers: ['last 2 versions'],
