@@ -1,54 +1,57 @@
-/* globals _, Backbone */
+/* globals $, _, Backbone */
 
 'use strict';
 
 var app = app || {};
 
 app.AppView = Backbone.View.extend({
-    el: '#page-content',
+    tagName: 'div',
 
     initialize: function() {
-        this.itemModel = new app.Item({
-            name: 'yo',
-            age: 666
+        this.businessesCollection = new app.BusinessesCollection();
+        this.businessesCollection.fetch({
+            success: function() {
+                this.render();
+            }.bind(this)
         });
-        this.itemView = new app.ItemView({
-            model: this.itemModel
-        });
-        this.render();
     },
 
     render: function() {
-        var itemMarkup = this.itemView.render().$el.html();
-        this.$el.html(itemMarkup);
-    }
-});
+        var view;
 
-// models
-app.Item = Backbone.Model.extend({
-    defaults: {
-        name: '',
-        age: 0
-    }
-});
-
-app.ItemsCollection = Backbone.Collection.extend({
-    model: app.Item
-});
-
-// views
-app.ItemView = Backbone.View.extend({
-    tagName: 'p',
-
-    template: _.template('Name: <%= name %> - Age: <%= age %>'),
-
-    render: function() {
-        var attributes = this.model.attributes;
-        var innerMarkup = this.template(attributes);
-
-        this.$el.html(innerMarkup);
+        this.businessesCollection.each(function(biz) {
+            view = new app.BusinessView({ model: biz });
+            this.$el.append(view.render().$el);
+        }.bind(this));
+        this.$el.insertAfter($('.page-header'));
         return this;
     }
 });
 
-app.thisAppView = new app.AppView();
+// models
+app.Business = Backbone.Model.extend({
+    defaults: {
+        vendor_name: 'vendor name',
+        email: 'default@email.com'
+    }
+});
+
+app.BusinessesCollection = Backbone.Collection.extend({
+    model: app.Business,
+    url: 'https://data.sfgov.org/resource/s57h-9wm9.json'
+});
+
+// views
+app.BusinessView = Backbone.View.extend({
+    tagName: 'p',
+
+    template: _.template('<p>Vendor name: <%= vendor_name %> - Email: <a href="mailto:<%= email %>"><%= email %></a></p>'),
+
+    render: function() {
+        var businesses = this.model.toJSON();
+        this.$el.append(this.template(businesses));
+        return this;
+    }
+});
+
+app.appView = new app.AppView({ collection: app.BusinessesCollection });
