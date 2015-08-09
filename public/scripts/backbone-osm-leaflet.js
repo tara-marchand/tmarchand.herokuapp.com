@@ -14,6 +14,8 @@ var app = app || {};
 app.AppView = Backbone.View.extend({
     tagName: 'div',
 
+    className: 'app',
+
     initialize: function() {
         this.businessesCollection = new app.BusinessesCollection();
         this.businessesCollection.fetch({
@@ -28,13 +30,20 @@ app.AppView = Backbone.View.extend({
         var mapModel = new app.MapModel();
         var mapView = new app.MapView({ model: mapModel });
 
-        this.$el.append(mapView.render().$el);
-        mapView.update();
+        // add the map element
+        this.$el.append(mapView.el);
+
         this.businessesCollection.each(function(biz) {
             bizView = new app.BusinessView({ model: biz });
             this.$el.append(bizView.render().$el);
         }.bind(this));
+
+        // add everything after the header
         this.$el.insertAfter($('.page-header'));
+
+        // init the map
+        mapView.update();
+
         return this;
     }
 });
@@ -53,15 +62,19 @@ app.MapModel = Backbone.Model.extend({
 
 // map view
 app.MapView = Backbone.View.extend({
-    template: _.template('<div class="map"></div>'),
+    tagName: 'section',
 
-    render: function() {
-        this.$el.html(this.template());
-        return this;
-    },
+    className: 'map',
 
     update: function() {
-        var map = L.map(document.querySelector('.map')).setView([this.model.get('lat'), this.model.get('long')], this.model.get('zoom'));
+        var map = L.map(document.querySelector('.map')).setView(
+            [
+                this.model.get('lat'),
+                this.model.get('long')
+            ],
+            this.model.get('zoom')
+        );
+
         L.tileLayer(this.model.get('tileLayerUrl'), {
             attribution: this.model.get('attribution'),
             maxZoom: this.model.get('maxZoom')
