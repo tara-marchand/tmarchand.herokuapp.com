@@ -70,7 +70,7 @@ var isAsyncComponent    = require('./isAsyncComponent');
 var PreloaderMixin = {
 
   propTypes: {
-    children: React.PropTypes.component.isRequired,
+    children: React.PropTypes.element.isRequired,
     onAsyncStateFetched: React.PropTypes.func,
     onBeforeUpdate: React.PropTypes.func,
     preloader: React.PropTypes.element,
