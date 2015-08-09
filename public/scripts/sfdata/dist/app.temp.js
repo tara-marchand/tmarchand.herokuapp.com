@@ -1,14 +1,10 @@
-/* globals document, $, _, Backbone, L */
+/* globals $, _, Backbone, L */
 
 'use strict';
 
-// var map = L.map(document.querySelector('.map')).setView([37.7792768, -122.4192704], 13);
-// L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-//     maxZoom: 18
-// }).addTo(map);
-//
 var app = app || {};
+
+/*** app ***/
 
 // app view
 app.AppView = Backbone.View.extend({
@@ -30,30 +26,36 @@ app.AppView = Backbone.View.extend({
         var mapModel = new app.MapModel();
         var mapView = new app.MapView({ model: mapModel });
 
-        // add the map element
+        // add the map element to the app view element
         this.$el.append(mapView.el);
-
+        // iterate and add each business element
         this.businessesCollection.each(function(biz) {
             bizView = new app.BusinessView({ model: biz });
             this.$el.append(bizView.render().$el);
         }.bind(this));
-
-        // add everything after the header
+        // insert complete element after the header
         this.$el.insertAfter($('.page-header'));
-
         // init the map
-        mapView.update();
+        mapView.init();
 
         return this;
     }
 });
+
+/* globals document, Backbone, L */
+
+/*** map ***/
+
+'use strict';
+
+var app = app || {};
 
 // map model
 app.MapModel = Backbone.Model.extend({
     defaults: {
         lat: 37.7792768,
         long: -122.4192704,
-        zoom: 10,
+        zoom: 12,
         tileLayerUrl: 'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
         maxZoom: 18
@@ -66,7 +68,7 @@ app.MapView = Backbone.View.extend({
 
     className: 'map',
 
-    update: function() {
+    init: function() {
         var map = L.map(document.querySelector('.map')).setView(
             [
                 this.model.get('lat'),
@@ -81,6 +83,14 @@ app.MapView = Backbone.View.extend({
         }).addTo(map);
     }
 });
+
+/* globals _, Backbone */
+
+/*** list of businesses ***/
+
+'use strict';
+
+var app = app || {};
 
 // business models
 app.Business = Backbone.Model.extend({
@@ -107,6 +117,12 @@ app.BusinessView = Backbone.View.extend({
         return this;
     }
 });
+
+/*** > initialize < ***/
+
+'use strict';
+
+var app = app || {};
 
 // app view instance
 app.appView = new app.AppView({ collection: app.BusinessesCollection });
