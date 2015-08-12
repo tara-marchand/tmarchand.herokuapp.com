@@ -13,8 +13,8 @@ app.AppView = Backbone.View.extend({
     className: 'app',
 
     initialize: function() {
-        this.businessesCollection = new app.BusinessesCollection();
-        this.businessesCollection.fetch({
+        this.noticesCollection = new app.NoticesCollection();
+        this.noticesCollection.fetch({
             success: function() {
                 this.render();
             }.bind(this)
@@ -22,16 +22,16 @@ app.AppView = Backbone.View.extend({
     },
 
     render: function() {
-        var bizView;
+        var noticeView;
         var mapModel = new app.MapModel();
         var mapView = new app.MapView({ model: mapModel });
 
         // add the map element to the app view element
         this.$el.append(mapView.el);
         // iterate and add each business element
-        this.businessesCollection.each(function(biz) {
-            bizView = new app.BusinessView({ model: biz });
-            this.$el.append(bizView.render().$el);
+        this.noticesCollection.each(function(notice) {
+            noticeView = new app.NoticeView({ model: notice });
+            this.$el.append(noticeView.render().$el);
         }.bind(this));
         // insert complete element after the header
         this.$el.insertAfter($('.page-header'));

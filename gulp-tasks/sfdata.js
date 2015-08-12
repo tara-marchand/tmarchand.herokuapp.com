@@ -9,7 +9,7 @@ module.exports = function (gulp, gulpPlugins, modules, config) {
             sfDataDir + '/src/app.js',
             // models and their views
             sfDataDir + '/src/map.js',
-            sfDataDir + '/src/businesses.js',
+            sfDataDir + '/src/notices.js',
             // initialization
             sfDataDir + '/src/init.js'
         ])
