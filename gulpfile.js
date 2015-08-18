@@ -12,6 +12,7 @@ var config = {
 var modules = {
     browserify: require('browserify'),
     del: require('del'),
+    fs: require('fs'),
     glob: require('glob'),
     vinylSourceStream: require('vinyl-source-stream'),
     watchify: require('watchify')
