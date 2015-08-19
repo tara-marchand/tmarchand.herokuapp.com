@@ -13,7 +13,9 @@ app.MapModel = Backbone.Model.extend({
         long: -122.4192704,
         zoom: 12,
         tileLayerUrl: 'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+        attribution: 'Map data &copy; ' +
+            '<a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
         maxZoom: 18
     }
 });

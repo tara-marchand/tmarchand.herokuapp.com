@@ -26,6 +26,17 @@ app.AppView = Backbone.View.extend({
         var mapModel = new app.MapModel();
         var mapView = new app.MapView({ model: mapModel });
 
+        // center on current location if browser supports geolocation
+        if ('geolocation' in window.navigator) {
+            window.navigator.geolocation.getCurrentPosition(function(position) {
+                // allowed
+                mapModel.set(position.coords.latitude);
+                mapModel.set(position.coords.longitude);
+            }, function() {
+                // denied/error
+            });
+        }
+
         // add the map element to the app view element
         this.$el.append(mapView.el);
         // iterate and add each business element
