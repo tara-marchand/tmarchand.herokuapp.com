@@ -1,4 +1,4 @@
-/* globals $, _, Backbone, L */
+/* globals $, Backbone */
 
 'use strict';
 
@@ -13,8 +13,8 @@ app.AppView = Backbone.View.extend({
     className: 'app',
 
     initialize: function() {
-        this.noticesCollection = new app.NoticesCollection();
-        this.noticesCollection.fetch({
+        this.graffitiCollection = new app.GraffitiCollection();
+        this.graffitiCollection.fetch({
             success: function() {
                 this.render();
             }.bind(this)
@@ -22,16 +22,27 @@ app.AppView = Backbone.View.extend({
     },
 
     render: function() {
-        var noticeView;
+        var graffitiView;
         var mapModel = new app.MapModel();
         var mapView = new app.MapView({ model: mapModel });
+
+        // center on current location if browser supports geolocation
+        if ('geolocation' in window.navigator) {
+            window.navigator.geolocation.getCurrentPosition(function(position) {
+                // allowed
+                mapModel.set(position.coords.latitude);
+                mapModel.set(position.coords.longitude);
+            }, function() {
+                // denied/error
+            });
+        }
 
         // add the map element to the app view element
         this.$el.append(mapView.el);
         // iterate and add each business element
-        this.noticesCollection.each(function(notice) {
-            noticeView = new app.NoticeView({ model: notice });
-            this.$el.append(noticeView.render().$el);
+        this.graffitiCollection.each(function(notice) {
+            graffitiView = new app.GraffitiView({ model: notice });
+            this.$el.append(graffitiView.render().$el);
         }.bind(this));
         // insert complete element after the header
         this.$el.insertAfter($('.page-header'));

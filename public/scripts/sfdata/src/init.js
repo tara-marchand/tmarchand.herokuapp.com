@@ -5,4 +5,4 @@
 var app = app || {};
 
 // app view instance
-app.appView = new app.AppView({ collection: app.NoticesCollection });
+app.appView = new app.AppView({ collection: app.GraffitiCollection });
