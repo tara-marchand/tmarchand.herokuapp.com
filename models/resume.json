@@ -4,7 +4,6 @@
         "label": "",
         "picture": "",
         "email": "tara@mac.com",
-        "phone": "415-518-0678",
         "website": "http://www.tmarchand.com/",
         "summary": "Experienced technology lead and front-end engineer.",
         "profiles": [
@@ -126,18 +125,18 @@
                 "JavaScript libraries and frameworks (jQuery, Angular)",
                 "CSS preprocessors (SASS, LESS)",
                 "version control systems (Git, Subversion)",
-                "build tools (Grunt)", 
+                "build tools (Grunt)",
                 "package managers (Bower, npm)"
             ]
         },
         {
             "name": "Interests",
             "keywords": [
-                "software architecture", 
+                "software architecture",
                 "API integration",
-                "mobile-first & responsive design", 
-                "user experience & interaction design", 
-                "agile methodologies" 
+                "mobile-first & responsive design",
+                "user experience & interaction design",
+                "agile methodologies"
             ]
         }
     ]
