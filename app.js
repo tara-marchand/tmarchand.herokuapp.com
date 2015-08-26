@@ -1,12 +1,10 @@
+'use strict';
+
 /**
  * module dependencies
  */
-var fs = require('fs');
-var http = require('http');
 var path = require('path');
 var express = require('express');
-var morgan = require('morgan');
-var logger = morgan('dev');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer');
@@ -15,13 +13,8 @@ var flash = require('connect-flash');
 var errorHandler = require('errorhandler');
 var expressState = require('express-state');
 var exphbs = require('express3-handlebars');
-
-var React = require('react');
-var nodeJsx = require('node-jsx').install({extension: '.jsx'});
-
 var mongoose = require('mongoose');
 var passport = require('passport');
-var newrelic = require('newrelic');
 
 /**
  * controllers (route handlers)
@@ -165,8 +158,6 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter', {
 app.get('/contact', contactController.getContact);
 app.post('/contact/send', contactController.postContact);
 app.get('/api/instagram', function(req, res) {
-    'use strict';
-
     req.pipe(instagramRequest).pipe(res);
 });
 app.get('/photos', photosController.photosHome);
