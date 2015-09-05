@@ -1,6 +1,6 @@
 # tmarchand
 
-My site.
+My site. Repo on Bitbucket, continuous integration using Codeship, hosted on Heroku.
 
 ## Development
 
