@@ -10,22 +10,11 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 var session = require('express-session');
 var flash = require('connect-flash');
-var errorHandler = require('errorhandler');
 var expressState = require('express-state');
 var exphbs = require('express3-handlebars');
 var mongoose = require('mongoose');
 var passport = require('passport');
-
-/**
- * controllers (route handlers)
- */
-var homeController = require('./controllers/home.js');
-var userController = require('./controllers/user.js');
-var adminController = require('./controllers/admin.js');
-var contactController = require('./controllers/contact.js');
-var photosController = require('./controllers/photos.js');
-var spotifyController = require('./controllers/spotify.js');
-var contentController = require('./controllers/content.js');
+var winston = require('winston');
 
 /**
  * API keys and Passport configuration
@@ -39,9 +28,27 @@ var passportConfig = require('./config/passport');
 var nav = require('./helpers/nav.js');
 
 /**
+ * controllers (route handlers)
+ */
+var homeController = require('./controllers/home.js');
+var userController = require('./controllers/user.js');
+var adminController = require('./controllers/admin.js');
+var contactController = require('./controllers/contact.js');
+var photosController = require('./controllers/photos.js');
+var contentController = require('./controllers/content.js');
+
+/**
  * create Express server
  */
 var app = express();
+
+/**
+ * log errors to Console
+ */
+// winston.add(winston.transports.Console, {
+//     handleExceptions: true,
+//     humanReadableUnhandledException: true
+// });
 
 /**
  * connect to MongoDB
@@ -77,7 +84,7 @@ app.use(flash());
 /* static files and Bower components */
 app.use('/', express.static(__dirname + '/public'));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
-app.use('/bower_components',  express.static(__dirname + '/bower_components'));
+app.use('/bower_components', express.static(__dirname + '/bower_components'));
 /* nav items */
 app.set('navItems', nav.getItems());
 /* Handlebars */
@@ -161,13 +168,7 @@ app.get('/api/instagram', function(req, res) {
     req.pipe(instagramRequest).pipe(res);
 });
 app.get('/photos', photosController.photosHome);
-app.get('/spotify', spotifyController.spotifyHome);
 app.get('/:page', contentController.getContent);
-
-/**
- * error handler
- */
-app.use(errorHandler({ dumpExceptions: true, showStack: true }));
 
 /**
  * start

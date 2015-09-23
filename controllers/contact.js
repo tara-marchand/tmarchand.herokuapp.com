@@ -1,5 +1,9 @@
-var secrets = require("../config/secrets");
-var sendgrid = require("sendgrid")(
+'use strict';
+
+var secrets = require('../config/secrets');
+var winston = require('winston');
+
+var sendgrid = require('sendgrid')(
     secrets.sendgrid.user,
     secrets.sendgrid.password
 );
@@ -9,10 +13,10 @@ var sendgrid = require("sendgrid")(
  * contact form page
  */
 exports.getContact = function(req, res) {
-    res.render("contact", {}, function(err, html) {
+    res.render('contact', {}, function(err, html) {
         if (err) {
-            console.log(err);
-            res.render("404");
+            winston.log(err);
+            res.render('404');
         } else {
             res.end(html);
         }
@@ -29,7 +33,7 @@ exports.postContact = function(req, res) {
     var message = req.body.message;
 
     sendgrid.send({
-        to: "tara@mac.com",
+        to: 'tara@mac.com',
         from: from,
         subject: subject,
         text: message
@@ -37,8 +41,8 @@ exports.postContact = function(req, res) {
         if (err) {
             return console.error(err);
         }
-        if (json.message === "success") {
-            res.redirect("/");
+        if (json.message === 'success') {
+            res.redirect('/');
         }
     });
 };
