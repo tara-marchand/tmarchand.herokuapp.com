@@ -1,2 +1,2 @@
 gulp: gulp watch
-web: supervisor -- --debug app.js
+web: nodemon app.js
