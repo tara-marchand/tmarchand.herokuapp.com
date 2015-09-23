@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
     mongoDb: process.env.MONGOLAB_URI,
 
