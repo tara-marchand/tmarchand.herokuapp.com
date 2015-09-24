@@ -34,7 +34,6 @@ var homeController = require('./controllers/home.js');
 var userController = require('./controllers/user.js');
 var adminController = require('./controllers/admin.js');
 var contactController = require('./controllers/contact.js');
-var photosController = require('./controllers/photos.js');
 var contentController = require('./controllers/content.js');
 
 /**
@@ -164,10 +163,6 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter', {
 );
 app.get('/contact', contactController.getContact);
 app.post('/contact/send', contactController.postContact);
-app.get('/api/instagram', function(req, res) {
-    req.pipe(instagramRequest).pipe(res);
-});
-app.get('/photos', photosController.photosHome);
 app.get('/:page', contentController.getContent);
 
 /**

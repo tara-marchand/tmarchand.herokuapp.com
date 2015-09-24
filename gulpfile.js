@@ -28,13 +28,6 @@ function getTask(task) {
 
 gulp.task('sass', getTask('sass'));
 
-gulp.task('photos', ['photos:lib', 'photos:server', 'photos:browser']);
-gulp.task('photos:lib', getTask('photos/lib.js'));
-gulp.task('photos:server', getTask('photos/server.js'));
-gulp.task('photos:browser', getTask('photos/browser.js'));
-
-gulp.task('watch', ['sass', 'photos'], function() {
+gulp.task('watch', ['sass'], function() {
     gulp.watch('sass/**/*.scss', ['sass']);
-
-    gulp.watch('views/jsx/**/*.jsx', ['photos:server', 'photos:browser']);
 });
