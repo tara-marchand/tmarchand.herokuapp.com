@@ -117,17 +117,19 @@
                 "CSS",
                 "HTML",
                 "PHP",
+                "C#",
                 "SQL"
             ]
         },
         {
             "name": "Tools",
             "keywords": [
-                "JavaScript libraries and frameworks (jQuery, Angular)",
+                "JavaScript libraries and frameworks (jQuery, Angular, React)",
                 "CSS preprocessors (SASS, LESS)",
                 "version control systems (Git, Subversion)",
                 "build tools (Grunt)",
-                "package managers (Bower, npm)"
+                "package managers (Bower, npm)",
+                "content management systems (WordPress, Sitecore [certified])"
             ]
         },
         {
