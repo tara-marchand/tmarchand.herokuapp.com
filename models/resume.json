@@ -124,22 +124,24 @@
         {
             "name": "Tools",
             "keywords": [
-                "JavaScript libraries and frameworks (jQuery, Angular, React)",
+                "client-side JavaScript libraries and frameworks (jQuery, Angular, Backbone, React)",
                 "CSS preprocessors (SASS, LESS)",
-                "version control systems (Git, Subversion)",
-                "build tools (Grunt)",
-                "package managers (Bower, npm)",
+                "version control systems (git, Subversion)",
+                "build & deployment tools (grunt, gulp, webpack)",
+                "package managers (bower, npm)",
                 "content management systems (WordPress, Sitecore [certified])"
             ]
         },
         {
             "name": "Interests",
             "keywords": [
-                "software architecture",
+                "software design & architecture",
                 "API integration",
                 "mobile-first & responsive design",
                 "user experience & interaction design",
-                "agile methodologies"
+                "agile methodologies",
+                "continuous integration",
+                "performance"
             ]
         }
     ]
