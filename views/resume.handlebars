@@ -15,12 +15,12 @@
         {{/if}}
         {{#if phone}}
         <span class="phone">
-            &middot; {{phone}}
+            <span class="dot">&middot;</span> {{phone}}
         </span>
         {{/if}}
         {{#if website}}
         <span class="website">
-            &middot; <a href="{{website}}">{{website}}</a>
+            <span class="dot">&middot;</span> <a href="{{website}}">{{website}}</a>
         </span>
         {{/if}}
         </div>
@@ -37,7 +37,7 @@
             {{#each profiles}}
             <span class="item">
                 {{#if network}}
-                {{#if url}}{{#if @first}}{{else}}&middot;{{/if}} <a href="{{url}}" class="network">{{/if}}{{network}}{{#if url}}</a>{{/if}}
+                {{#if url}}{{#if @first}}{{else}}<span class="dot">&middot;</span>{{/if}} <a href="{{url}}" class="network">{{/if}}{{network}}{{#if url}}</a>{{/if}}
                 {{/if}}
             </span>
             {{/each}}
@@ -93,7 +93,7 @@
                 <span class="endDate">
                     - Present
                 </span>
-                {{/if}} 
+                {{/if}}
             </div>
             {{/if}}
             {{#if summary}}

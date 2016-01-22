@@ -9,21 +9,43 @@
 }
 
 @media print {
+    .wrapper {
+        max-width: 100%;
+        padding: 0;
+    }
+
     body > .container {
         padding: 0;
     }
 
-    #resume {
-        width: 90%;
+    .contact a[href]:after {
+        content: none;
     }
 
-    a[href]:after {
-        content: none;
+    #profiles {
+        margin-top: 20px;
+    }
+
+    #profiles .item {
+        display: block;
+    }
+
+    #profiles .dot {
+        display: none;
+    }
+
+    #profiles a[href]:after {
+        content: ": " attr(href);
     }
 
     #footer {
         display: none;
     }
+}
+
+@page {
+    size: auto;
+    margin: 15mm 15mm;
 }
 
 #skills .item {
@@ -45,4 +67,3 @@
 #skills .keywords li:last-of-type:after {
     content: ''
 }
-
