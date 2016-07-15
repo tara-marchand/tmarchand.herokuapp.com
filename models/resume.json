@@ -33,7 +33,8 @@
             "endDate": "present",
             "summary": "",
             "highlights": [
-                "<strong>Dignity Health:</strong> Lead technology discipline agency-side for this large healthcare client. Analyze, recommend, and develop digital solutions",
+                "<strong>Google:</strong> As part of embedded agency team, lead server-side and database development of new internal application with many complex integrations",
+                "<strong>Dignity Health:</strong> Led technology discipline agency-side for this large healthcare client. Analyzed, recommended, and maintained digital solutions",
                 "<strong>Nike Events Tool:</strong> Led front-end development for this platform's localized, mobile-friendly web experiences used by tens of thousands of customers globally. Manage 2 front-end engineers. Integrate with custom APIs. Example calendar: <a href=\"https://www.nike.com/events-registration/series?id=1607&days=7\" target=\"_blanks\">Nike+ San Francisco</a>",
                 "<strong>Microsoft Surface:</strong> Architected and wrote presentation layer code for this fully responsive website developed for the launch of this tablet device. Integrated with custom CMS and API.",
                 "<strong>Nike+ FuelBand:</strong> Helped build the web application front end for the debut of this pioneering activity tracker. Created complex visualizations from user data in JavaScript.",
@@ -117,6 +118,7 @@
                 "CSS",
                 "HTML",
                 "PHP",
+                "Python",
                 "C#",
                 "SQL"
             ]
@@ -127,9 +129,9 @@
                 "client-side JavaScript libraries and frameworks (jQuery, Angular, Backbone, React)",
                 "CSS preprocessors (SASS, LESS)",
                 "version control systems (git, Subversion)",
-                "build & deployment tools (grunt, gulp, webpack)",
+                "build & deployment tools (grunt, gulp, browserify, webpack)",
                 "package managers (bower, npm)",
-                "content management systems (WordPress, Sitecore [certified])"
+                "content management systems & frameworks (WordPress, Sitecore [certified], Django)"
             ]
         },
         {
